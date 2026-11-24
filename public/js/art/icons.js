@@ -21,6 +21,7 @@
     shuffle: '<path d="M4 7h3.5c4.5 0 5.5 10 10 10H20M4 17h3.5c1.8 0 3-1.5 4-3.4M16.5 4L20 7l-3.5 3M16.5 14l3.5 3-3.5 3M13.4 9.6C14.4 8 15.5 7 17.5 7H20"/>',
     reverse: '<path d="M7 4v15M4 16l3 3 3-3M17 20V5M14 8l3-3 3 3"/>',
     calendar: '<rect x="4" y="5.5" width="16" height="14.5" rx="2"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4"/><rect x="8" y="13" width="3" height="3" rx=".6" fill="currentColor" stroke="none"/>',
+    lock: '<rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5M12 14.5v2.5"/>',
     flag: '<path d="M6 21V4M6 4.5c4-2 7 2 12 0v8.5c-5 2-8-2-12 0"/>',
     users: '<circle cx="9" cy="8.5" r="3.2"/><path d="M3.5 19.5c.6-3.4 2.8-5.2 5.5-5.2s4.9 1.8 5.5 5.2"/><circle cx="16.5" cy="9.5" r="2.6"/><path d="M16 14.4c2.4.1 4 1.6 4.5 4.6"/>',
     user: '<circle cx="12" cy="8.5" r="3.6"/><path d="M5 20c.8-4 3.6-6 7-6s6.2 2 7 6"/>',

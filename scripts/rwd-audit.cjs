@@ -85,6 +85,14 @@ const SCENES = {
     await s.evaluate(id => Net.send({ type: 'join', roomId: id, name: '觀眾', want: 'spectator' }), id); await s.waitForTimeout(700);
     return s;
   },
+  spectateRace: async p => {
+    await createRoom(p, { mode: 'race', content: 'number', tier: 2, rounds: 3 }); const id = await p.evaluate(() => OnlineUI.room.id); await second(p);
+    await p.evaluate(() => Net.send({ type: 'start' })); await p.waitForTimeout(4300); await tapOnline(p, 5);
+    const ctx = await BROWSER.newContext({ viewport: p.viewportSize() }); const s = await ctx.newPage(); extraPages.push(ctx);
+    await s.goto(BASE); await s.waitForTimeout(300); await s.evaluate(() => OnlineUI.enterLobby()); await s.waitForTimeout(700);
+    await s.evaluate(id => Net.send({ type: 'join', roomId: id, name: '觀眾', want: 'spectator' }), id); await s.waitForTimeout(700);
+    return s;
+  },
   roomChat: async p => { await SCENES.grab(p); await p.evaluate(() => { App.openSide(); }); await p.waitForTimeout(200); }
 };
 

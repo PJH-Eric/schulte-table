@@ -28,7 +28,7 @@
     if (name === 'game') { title.main = opt.title || ''; title.sub = opt.sub || ''; }
     var r = RENDER[name]; if (r) r();
     updateTop();
-    root.Sound[name === 'game' || name === 'home' || name === 'solo' ? 'startBgm' : 'startBgm']();
+    root.Sound.startBgm();
     if (root.ServerOutage) root.ServerOutage.setScreen(name === 'lobby' || name === 'room' ? name : (name === 'game' && root.OnlineUI && root.OnlineUI.inRoom() ? 'room' : name));
     if (root.GameAnalytics) root.GameAnalytics.pageView(name);
     if (!opt.fromPop && prev !== name) { try { root.history.pushState({ s: name }, ''); } catch (e) { /* ignore */ } }
@@ -197,7 +197,7 @@
         var spec = R.levelSpec(no);
         tiles += '<button type="button" class="lv-tile' + (locked ? ' locked' : '') + (rec ? ' clear' : '') + (no === open && !rec ? ' current' : '') + '" data-lv="' + no + '"' + (locked ? ' aria-disabled="true"' : '') +
           ' aria-label="' + esc(t('levels.aria', { n: no, s: s }) + (locked ? '，' + t('levels.locked') : '')) + '">' +
-          '<b class="lv-no">' + no + '</b><span class="lv-ct">' + (locked ? K.icon('flag', 'lock-ico') : root.Art.token(spec.content, spec.content === 'icon' ? 2 : 0, 1)) + '</span>' +
+          '<b class="lv-no">' + no + '</b><span class="lv-ct">' + (locked ? K.icon('lock', 'lock-ico') : root.Art.token(spec.content, spec.content === 'icon' ? 2 : 0, 1)) + '</span>' +
           '<span class="lv-stars">' + [0, 1, 2].map(function (k) { return K.icon(k < s ? 'star' : 'star-empty', k < s ? 'on' : ''); }).join('') + '</span>' +
           '<small class="lv-time">' + (rec ? esc(K.fmtTime(rec.ms)) : spec.order === 'desc' ? esc(t('order.desc')) : '') + '</small></button>';
       }
@@ -389,7 +389,17 @@
     $('btn-settings').addEventListener('click', openSettings);
     $('btn-lang').addEventListener('click', openLangMenu);
     $('btn-back').addEventListener('click', goBack);
-    $('btn-side').addEventListener('click', function () { if ($('app').getAttribute('data-side') === 'open') closeSide(); else openSide(); });
+    $('btn-side').addEventListener('click', function () {
+      /* 寬版：左欄收合／展開（記住）；窄版：抽屜 */
+      if (root.matchMedia('(min-width: 1000px) and (min-aspect-ratio: 1/1)').matches) {
+        var c = !$('app').classList.contains('side-collapsed');
+        $('app').classList.toggle('side-collapsed', c); Store.set('sideCollapsed', c);
+        $('btn-side').setAttribute('aria-expanded', String(!c));
+        return;
+      }
+      if ($('app').getAttribute('data-side') === 'open') closeSide(); else openSide();
+    });
+    if (Store.get('sideCollapsed')) $('app').classList.add('side-collapsed');
     $('side-close').addEventListener('click', closeSide);
     $('side-backdrop').addEventListener('click', closeSide);
     $('btn-pause').addEventListener('click', function () { root.Solo.pause(); });

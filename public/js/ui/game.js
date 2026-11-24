@@ -156,13 +156,20 @@
     })();
   }
 
+  /** 遊戲中的短提示（連擊、差一點）：疊在頂列上，不蓋住盤面 */
+  var flashT = 0;
+  function flash(text, kind) {
+    var el = $('g-flash'); if (!el) return;
+    el.textContent = text; el.className = 'g-flash ' + (kind || ''); el.hidden = false;
+    clearTimeout(flashT); flashT = setTimeout(function () { el.hidden = true; }, 1100);
+  }
   function setFoot(html) { var el = $('g-foot'); if (el) el.innerHTML = html || ''; }
   function close() { stopClock(); cancelCountdown(); hidePause(); var d = $('draw-layer'); d.hidden = true; d.innerHTML = ''; }
 
   root.GameView = {
     init: init, open: open, startClock: startClock, stopClock: stopClock, setTime: setTime, setProgress: setProgress, setNext: setNext,
     setScores: setScores, setRace: setRace, countdown: countdown, cancelCountdown: cancelCountdown, showPause: showPause, hidePause: hidePause,
-    paused: paused, draw: draw, close: close, refreshNext: refreshNext, setFoot: setFoot,
+    paused: paused, draw: draw, close: close, refreshNext: refreshNext, setFoot: setFoot, flash: flash,
     get board() { return board; }, get state() { return state; }
   };
 })(typeof self !== 'undefined' ? self : this);

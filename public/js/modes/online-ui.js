@@ -123,7 +123,7 @@
   function roomRow(r) {
     var full = r.players >= r.cap, busy = r.status !== 'waiting';
     return '<li class="room-row"><span class="rr-ico">' + K.icon(r.mode === 'grab' ? 'hand' : 'bolt') + '</span>' +
-      '<span class="rr-main"><b>' + esc(t('lobby.roomOf', { n: r.hostName || '—' })) + ' <small>#' + esc(r.id) + '</small></b><small>' + esc(roomTitle(r)) + '</small></span>' +
+      '<span class="rr-main"><b>' + esc(t('lobby.roomOf', { n: r.hostName || '—' })) + '</b><small>#' + esc(r.id) + '・' + esc(roomTitle(r)) + '</small></span>' +
       '<span class="rr-meta"><i>' + K.icon('users') + r.players + '/' + r.cap + '</i><i>' + K.icon('eye') + r.spectators + '</i><i class="st st-' + r.status + '">' + esc(t('rs.' + r.status)) + '</i></span>' +
       '<span class="rr-act"><button type="button" class="btn small primary" data-join="' + esc(r.id) + '"' + (full || busy ? ' disabled' : '') + '>' + esc(t('lobby.join')) + '</button>' +
       '<button type="button" class="btn small ghost" data-watch="' + esc(r.id) + '"' + (r.specFull ? ' disabled' : '') + '>' + K.icon('eye') + '<span>' + esc(t('lobby.watch')) + '</span></button></span></li>';
@@ -441,10 +441,10 @@
     delete pending[e.idx];
     B.setDone(e.idx, e.seat, true);
     if (!mine && !isPlayer()) root.Sound.play('tap', e.step);
-    if (mine && e.combo >= 3 && e.combo % 3 === 0) K.toast(t('online.comboN', { n: e.combo }), 'good', 1200);
+    if (mine && e.combo >= 3 && e.combo % 3 === 0) root.GameView.flash(t('online.comboN', { n: e.combo }), 'good');
     refreshHud();
   }
-  function almost() { root.Sound.play('wrong'); K.toast(t('online.almost'), 'bad', 1200); }
+  function almost() { root.Sound.play('wrong'); root.GameView.flash(t('online.almost'), 'bad'); }
   function onAck(a) {
     if (!room || !room.match || !board) return;
     var B = root.GameView.board;

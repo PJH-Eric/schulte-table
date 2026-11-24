@@ -580,7 +580,7 @@ button { cursor: pointer; -webkit-tap-highlight-color: transparent; touch-action
 .pause-card h2 { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 0 0 6px; }
 .pause-card p { color: var(--muted); margin: 0 0 16px; }
 .pause-actions { display: flex; flex-direction: column; gap: 10px; }
-.draw-layer { position: absolute; inset: 0; z-index: 11; display: grid; place-items: center; background: rgba(0,0,0,.35); backdrop-filter: blur(4px); padding: 12px; }
+.draw-layer { position: absolute; inset: 0; z-index: 11; display: grid; place-items: center; background: var(--bg); background-image: var(--bg-img); background-size: var(--bg-size, auto); border-radius: var(--radius); padding: 12px; }
 .draw-card { width: min(420px, 100%); padding: 18px; text-align: center; background: var(--panel-solid); border: 2px solid var(--panel-edge); border-radius: var(--radius); color: var(--text); box-shadow: var(--panel-shadow); }
 .draw-card.landed { animation: candyPop .4s; }
 .draw-title { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 0 0 12px; font-weight: 800; font-size: 18px; }
@@ -807,3 +807,15 @@ body .lc-root { --lc-accent: var(--accent); --lc-accent-ink: var(--accent-ink); 
 }
 /* 頁面底色上的次要按鈕（不在面板裡）用頁面文字色，深色底也看得清楚 */
 .room-actions .btn.ghost, .page > .row-btns .btn.ghost { color: var(--on-bg); border-color: var(--on-bg-muted); }
+/* 觀戰同題競速：只看所有人的進度條，不看盤面 */
+#scr-game.race-watch .board-area { display: none; }
+#scr-game.race-watch .hud-race { position: static !important; width: min(720px, 100%) !important; flex: 1; justify-content: center; gap: 10px; margin: 0 auto; }
+#scr-game.race-watch .rc-row { padding: 10px 14px; font-size: 16px; }
+#scr-game.race-watch .rc-bar { height: 16px; border-radius: 8px; }
+#scr-game.race-watch .hud-next { display: none !important; }
+.hud { position: relative; }
+.g-flash { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 5; margin: 0; padding: 8px 18px; border-radius: 999px; background: var(--accent); color: var(--accent-ink); font-weight: 800; font-size: 17px; white-space: nowrap; pointer-events: none; box-shadow: 0 6px 18px rgba(0,0,0,.3); animation: popIn .2s; }
+.g-flash.bad { background: var(--bad); color: #fff; }
+.g-flash.good { background: #f5b301; color: #3a2400; }
+@media (orientation: landscape) and (max-height: 560px) { .g-flash { top: auto; bottom: 0; transform: translateX(-50%); font-size: 14px; } }
+#scr-lobby .page { padding-bottom: calc(96px + env(safe-area-inset-bottom)); }
