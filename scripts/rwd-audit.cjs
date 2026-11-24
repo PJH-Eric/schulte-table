@@ -19,6 +19,7 @@ const VIEWS = process.env.VIEWS_JSON ? JSON.parse(process.env.VIEWS_JSON) : [['p
 const LANGS = (process.env.LANGS || 'zh-Hant,en').split(',');
 const THEMES = (process.env.THEMES || 'wood').split(',');
 
+const tapOnline = async (pg, n) => { for (let i = 0; i < n; i++) { await pg.evaluate(() => OnlineUI._tapNext()); await pg.waitForTimeout(60); } };
 const solo = (o) => async p => { await p.evaluate(o => Solo.start(Object.assign({ skipCountdown: true }, o)), o); await p.waitForTimeout(150); };
 const tapN = (n) => async p => p.evaluate(n => { const c = Solo.current; for (let i = 0; i < n; i++) Solo._tap(Rules.cellOfStep(c.board, c.game.players.me.step)); }, n);
 const finish = async p => { await p.evaluate(() => { const c = Solo.current; while (c.phase === 'playing') Solo._tap(Rules.cellOfStep(c.board, c.game.players.me.step)); }); await p.waitForTimeout(900); };
@@ -72,13 +73,13 @@ const SCENES = {
   invite: async p => { await createRoom(p, { mode: 'grab' }); const r = await p.evaluate(() => [OnlineUI.room.id, OnlineUI.room.invite.token]); await p.evaluate(() => { Net.send({ type: 'leave' }); }); await p.waitForTimeout(300); await p.goto(BASE + '?room=' + r[0] + '&invite=' + r[1]); await p.waitForTimeout(1200); },
   room: async p => { await createRoom(p, { mode: 'grab', content: 'zhuyin', tier: 3, rounds: 5 }); },
   roomGuest: async p => { await createRoom(p, { mode: 'race' }); await second(p); await p.evaluate(() => Net.send({ type: 'invite_new' })); await p.waitForTimeout(300); },
-  grab: async p => { await createRoom(p, { mode: 'grab', content: 'number', tier: 2, rounds: 3 }); await second(p); await p.evaluate(() => Net.send({ type: 'start' })); await p.waitForTimeout(4200); await p.evaluate(() => { for (let i = 0; i < 6; i++) OnlineUI._tapNext(); }); await p.waitForTimeout(500); },
-  race: async p => { await createRoom(p, { mode: 'race', content: 'letter', tier: 2, rounds: 1 }); const q = await second(p); await p.evaluate(() => Net.send({ type: 'start' })); await p.waitForTimeout(4200); await q.evaluate(() => { for (let i = 0; i < 9; i++) OnlineUI._tapNext(); }); await p.evaluate(() => { for (let i = 0; i < 4; i++) OnlineUI._tapNext(); }); await p.waitForTimeout(500); },
-  roundEnd: async p => { await createRoom(p, { mode: 'grab', content: 'number', tier: 0, rounds: 3 }); await second(p); await p.evaluate(() => Net.send({ type: 'start' })); await p.waitForTimeout(4200); await p.evaluate(() => { for (let i = 0; i < 9; i++) OnlineUI._tapNext(); }); await p.waitForTimeout(700); },
-  matchEnd: async p => { await createRoom(p, { mode: 'race', content: 'number', tier: 0, rounds: 1 }); await second(p); await p.evaluate(() => Net.send({ type: 'start' })); await p.waitForTimeout(4200); await p.evaluate(() => { for (let i = 0; i < 9; i++) OnlineUI._tapNext(); }); await p.waitForTimeout(1200); },
+  grab: async p => { await createRoom(p, { mode: 'grab', content: 'number', tier: 2, rounds: 3 }); await second(p); await p.evaluate(() => Net.send({ type: 'start' })); await p.waitForTimeout(4200); await tapOnline(p, 6); await p.waitForTimeout(500); },
+  race: async p => { await createRoom(p, { mode: 'race', content: 'letter', tier: 2, rounds: 1 }); const q = await second(p); await p.evaluate(() => Net.send({ type: 'start' })); await p.waitForTimeout(4200); await tapOnline(q, 9); await tapOnline(p, 4); await p.waitForTimeout(500); },
+  roundEnd: async p => { await createRoom(p, { mode: 'grab', content: 'number', tier: 0, rounds: 3 }); await second(p); await p.evaluate(() => Net.send({ type: 'start' })); await p.waitForTimeout(4200); await tapOnline(p, 9); await p.waitForTimeout(700); },
+  matchEnd: async p => { await createRoom(p, { mode: 'race', content: 'number', tier: 0, rounds: 1 }); await second(p); await p.evaluate(() => Net.send({ type: 'start' })); await p.waitForTimeout(4200); await tapOnline(p, 9); await p.waitForTimeout(1200); },
   spectate: async p => {
     await createRoom(p, { mode: 'grab', content: 'number', tier: 1, rounds: 3 }); const id = await p.evaluate(() => OnlineUI.room.id); await second(p);
-    await p.evaluate(() => Net.send({ type: 'start' })); await p.waitForTimeout(4300); await p.evaluate(() => { for (let i = 0; i < 5; i++) OnlineUI._tapNext(); });
+    await p.evaluate(() => Net.send({ type: 'start' })); await p.waitForTimeout(4300); await tapOnline(p, 5);
     const ctx = await BROWSER.newContext({ viewport: p.viewportSize() }); const s = await ctx.newPage(); extraPages.push(ctx);
     await s.goto(BASE); await s.waitForTimeout(300); await s.evaluate(() => OnlineUI.enterLobby()); await s.waitForTimeout(700);
     await s.evaluate(id => Net.send({ type: 'join', roomId: id, name: '觀眾', want: 'spectator' }), id); await s.waitForTimeout(700);

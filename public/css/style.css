@@ -794,3 +794,16 @@ body .lc-root { --lc-accent: var(--accent); --lc-accent-ink: var(--accent-ink); 
   .result-card { padding: 12px; gap: 8px; }
   .res-big b { font-size: 32px; }
 }
+
+/* 大廳聊天面板（寬版浮動 300px）展開時，大廳內容讓出左側，不被蓋住 */
+@media (min-width: 641px) and (min-height: 501px) {
+  #app:has(.lc-root.lc-open:not(.lc-narrow)) #scr-lobby .page { padding-left: 336px; max-width: 1300px; }
+}
+.room-list { container-type: inline-size; }
+@container (max-width: 600px) {
+  .room-row { grid-template-columns: auto minmax(0, 1fr); }
+  .rr-meta { grid-column: 2; }
+  .rr-act { grid-column: 1 / -1; justify-content: flex-end; }
+}
+/* 頁面底色上的次要按鈕（不在面板裡）用頁面文字色，深色底也看得清楚 */
+.room-actions .btn.ghost, .page > .row-btns .btn.ghost { color: var(--on-bg); border-color: var(--on-bg-muted); }

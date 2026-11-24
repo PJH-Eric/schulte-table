@@ -5,12 +5,18 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test": "node --test tests/rules.test.js",
+    "test": "node --test tests/rules.test.js tests/rooms.test.js && node tests/online-check.js",
     "test:rules": "node --test tests/rules.test.js",
     "test:online": "node tests/online-check.js",
     "build:glyphs": "node scripts/build-glyphs.cjs",
     "inject": "node scripts/inject-server-url.js",
-    "inject:seo": "node scripts/inject-seo.js"
+    "inject:seo": "node scripts/inject-seo.js",
+    "test:rooms": "node --test tests/rooms.test.js",
+    "check:flow": "node scripts/flow-check.cjs",
+    "check:rwd": "node scripts/rwd-audit.cjs",
+    "check:failover": "node scripts/failover-check.cjs",
+    "cf:build": "node cloudflare/build-worker.cjs",
+    "cf:smoke": "node cloudflare/smoke.mjs"
   },
   "engines": {
     "node": ">=22"
