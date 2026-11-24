@@ -5,7 +5,7 @@
   'use strict';
   var T = {
     'doc.title': ['舒爾特方格｜免費線上專注力訓練・手機平板都能玩', '舒尔特方格｜免费在线专注力训练・手机平板都能玩', 'Schulte Table | Free Online Focus Training Game'],
-    'doc.desc': ['免費免下載的舒爾特方格專注力訓練：依序點完數字、注音、英文字母或圖案。五段難度、經典／逆序／隨機、闖關 50 關、每日挑戰，也能線上多人同盤搶點或同題競速，手機平板都能玩。',
+    'doc.desc': ['免費免下載的舒爾特方格專注力訓練：依序點完數字、注音、英文字母或圖案。五段難度、闖關 50 關、每日挑戰，也能線上多人同盤搶點或同題競速。',
       '免费免下载的舒尔特方格专注力训练：依序点完数字、注音、英文字母或图案。五段难度、经典／逆序／随机、闯关 50 关、每日挑战，也能在线多人同盘抢点或同题竞速，手机平板都能玩。',
       'A free Schulte table focus game: tap numbers, Zhuyin, letters or dot pictures in order. Five difficulties, classic, reverse and random modes, 50 levels, daily challenges, plus online grab and race matches.'],
 

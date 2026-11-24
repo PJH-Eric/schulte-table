@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="14" fill="#4e301a"/>
+  <rect x="3" y="3" width="58" height="58" rx="12" fill="none" stroke="#6b4223" stroke-width="2"/>
+  <g>
+    <rect x="9" y="9" width="14" height="14" rx="3" fill="#f6ecd5"/><rect x="25" y="9" width="14" height="14" rx="3" fill="#f6ecd5"/><rect x="41" y="9" width="14" height="14" rx="3" fill="#c9b996"/>
+    <rect x="9" y="25" width="14" height="14" rx="3" fill="#c9b996"/><rect x="25" y="25" width="14" height="14" rx="3" fill="#d33a2f"/><rect x="41" y="25" width="14" height="14" rx="3" fill="#f6ecd5"/>
+    <rect x="9" y="41" width="14" height="14" rx="3" fill="#f6ecd5"/><rect x="25" y="41" width="14" height="14" rx="3" fill="#c9b996"/><rect x="41" y="41" width="14" height="14" rx="3" fill="#f6ecd5"/>
+  </g>
+  <g fill="#2f7d5b"><rect x="9" y="21" width="14" height="2"/><rect x="25" y="21" width="14" height="2"/><rect x="9" y="53" width="14" height="2"/><rect x="41" y="37" width="14" height="2"/><rect x="41" y="53" width="14" height="2"/></g>
+  <path d="M30.2 29.8l3.6-2.3v9" fill="none" stroke="#fff8ee" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
