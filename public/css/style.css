@@ -518,6 +518,7 @@ button { cursor: pointer; -webkit-tap-highlight-color: transparent; touch-action
 .cell .pips { width: 82cqmin; height: 82cqmin; transform: scale(var(--sc, 1)); }
 .board.s3 .cell .glyph { height: 62cqh; }
 .board.s7 .cell .glyph { height: 58cqh; }
+.board.s6, .board.s7 { --gap: calc(var(--bs) * .013); }
 .cell.cc0 { color: var(--cc0); } .cell.cc1 { color: var(--cc1); } .cell.cc2 { color: var(--cc2); } .cell.cc3 { color: var(--cc3); } .cell.cc4 { color: var(--cc4); }
 .cell.cc5 { color: var(--cc5); } .cell.cc6 { color: var(--cc6); } .cell.cc7 { color: var(--cc7); } .cell.cc8 { color: var(--cc8); } .cell.cc9 { color: var(--cc9); }
 .cell .own { position: absolute; top: 6%; right: 6%; width: 30%; height: 30%; max-width: 26px; max-height: 26px; border-radius: 50%; background: currentColor; display: none; place-items: center; box-shadow: 0 0 0 2px rgba(255,255,255,.85); }
@@ -526,9 +527,13 @@ button { cursor: pointer; -webkit-tap-highlight-color: transparent; touch-action
 .board.locked .cell { cursor: default; }
 
 /* 木質：立體麻將牌 */
-[data-theme="wood"] .cell { box-shadow: 0 calc(var(--cell) * .07) 0 var(--cell-side), 0 calc(var(--cell) * .07 + 2px) 0 var(--cell-side2), 0 calc(var(--cell) * .1) calc(var(--cell) * .1) rgba(0,0,0,.35), inset 0 2px 0 rgba(255,255,255,.9); margin-bottom: calc(var(--cell) * .07); }
-[data-theme="wood"] .cell:active:not(.done), [data-theme="wood"] .cell.pop { transform: translateY(calc(var(--cell) * .05)); box-shadow: 0 calc(var(--cell) * .02) 0 var(--cell-side), 0 calc(var(--cell) * .02 + 1px) 0 var(--cell-side2), inset 0 2px 0 rgba(255,255,255,.7); }
-[data-theme="wood"] .cell.done { background: var(--cell-done-bg); color: var(--cell-done-ink); transform: translateY(calc(var(--cell) * .05)); box-shadow: 0 calc(var(--cell) * .02) 0 var(--cell-side2), inset 0 3px 8px rgba(80,50,20,.35); }
+/* 牌背厚度畫在按鈕內部（整格都可點），按下時牌面往下壓 */
+[data-theme="wood"] .cell { border-bottom-width: 0; box-shadow: inset 0 calc(var(--cell) * -.085) 0 var(--cell-side), inset 0 calc(var(--cell) * -.085 - 2px) 0 var(--cell-side2), 0 calc(var(--cell) * .05) calc(var(--cell) * .1) rgba(0,0,0,.35), inset 0 2px 0 rgba(255,255,255,.9); }
+[data-theme="wood"] .cell .cell-face { padding-bottom: 8.5%; transition: padding .07s; }
+[data-theme="wood"] .cell:active:not(.done) .cell-face, [data-theme="wood"] .cell.pop .cell-face { padding: 4% 0 3%; }
+[data-theme="wood"] .cell:active:not(.done), [data-theme="wood"] .cell.pop { box-shadow: inset 0 calc(var(--cell) * -.03) 0 var(--cell-side), inset 0 calc(var(--cell) * -.03 - 1px) 0 var(--cell-side2), 0 1px 3px rgba(0,0,0,.3), inset 0 2px 0 rgba(255,255,255,.7); }
+[data-theme="wood"] .cell.done { background: var(--cell-done-bg); color: var(--cell-done-ink); box-shadow: inset 0 calc(var(--cell) * -.03) 0 var(--cell-side2), inset 0 3px 8px rgba(80,50,20,.35); }
+[data-theme="wood"] .cell.done .cell-face { padding: 4% 0 3%; }
 [data-theme="wood"] .board .row { padding-bottom: 0; }
 /* 糖果：每格一種糖果色，彈性縮放，點過變霧面 */
 [data-theme="candy"] .cell { background: radial-gradient(120% 90% at 30% 20%, rgba(255,255,255,.85) 0 18%, transparent 40%), var(--candy, #ffc4dc); border: 0; box-shadow: 0 6px 14px rgba(160, 60, 120, .18), inset 0 -5px 0 rgba(0,0,0,.06); }
@@ -756,16 +761,24 @@ body .lc-root { --lc-accent: var(--accent); --lc-accent-ink: var(--accent-ink); 
   .dc-state { grid-column: 2; }
   .slider { width: 140px; }
 }
+@media (max-width: 400px) {
+  .topbar { gap: 4px; padding: 0 6px; }
+  .icon-btn { width: 40px; height: 40px; }
+  .top-left, .top-right { gap: 4px; }
+  #app[data-screen="game"] .top-title b { font-size: 13.5px; white-space: normal; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; line-height: 1.15; }
+  #app[data-screen="game"] .top-title small { display: none; }
+  .g-main { padding-left: 4px; padding-right: 4px; }
+}
 @media (max-width: 380px) {
   .hud-time .ico { display: none; }
   .res-actions { grid-template-columns: 1fr; }
 }
 /* 手機橫向（矮）：頂列變薄，資訊放到盤面左邊 */
 @media (orientation: landscape) and (max-height: 560px) {
-  .topbar { height: 48px; }
+  .topbar { height: 44px; }
   .icon-btn { width: 40px; height: 40px; }
   .pill-btn { height: 40px; }
-  .g-main { flex-direction: row; align-items: stretch; padding: 4px 8px calc(6px + env(safe-area-inset-bottom)); }
+  .g-main { flex-direction: row; align-items: stretch; padding: 2px 8px calc(4px + env(safe-area-inset-bottom)); }
   .hud { flex-direction: column; justify-content: flex-start; width: 150px; flex: none; }
   .hud-cell { min-height: 44px; padding: 4px 10px; }
   .hud-prog { min-width: 0; }
