@@ -94,6 +94,7 @@
   }
   function clearRoom() {
     if (root.GameBackend && root.GameBackend.forgetRoom) root.GameBackend.forgetRoom();
+    try { root.sessionStorage.removeItem('schulte.inRoom'); } catch (e) { /* ignore */ }
     room = null; chatMsgs = []; boardKey = ''; board = null; local = null; pending = {}; wantResult = false;
     root.GameView.close(); root.Result.hide();
     $('chatbox').hidden = true;
@@ -522,7 +523,7 @@
     var prevStatus = room && room.status;
     room = r;
     chatMsgs = r.chat.slice();
-    if (first) { if (root.GameBackend && root.GameBackend.rememberRoom) root.GameBackend.rememberRoom(); invite = null; clearInviteUrl(); if (root.LobbyChatUI && root.LobbyChatUI.closeNarrow) root.LobbyChatUI.closeNarrow(); }
+    if (first) { try { root.sessionStorage.setItem('schulte.inRoom', r.id); } catch (e) { /* ignore */ } if (root.GameBackend && root.GameBackend.rememberRoom) root.GameBackend.rememberRoom(); invite = null; clearInviteUrl(); if (root.LobbyChatUI && root.LobbyChatUI.closeNarrow) root.LobbyChatUI.closeNarrow(); }
     var live = r.status === 'playing' || r.status === 'roundEnd';
     if (live) { wantResult = false; syncGame(false); }
     else if (prevStatus && prevStatus !== 'waiting' && r.match && r.match.standing) { wantResult = true; syncGame(true); }
@@ -562,6 +563,9 @@
     $('btn-side').addEventListener('click', function () { var b = $('side-badge'); b.hidden = true; b.textContent = '0'; });
     initLobbyChat();
     started = true;
+    /* 重新整理：之前在房間裡才自動連線回房（首頁與單機平常不連線） */
+    var was = null; try { was = root.sessionStorage.getItem('schulte.inRoom'); } catch (e) { /* ignore */ }
+    if (was && Net.enabled && !/[?&]room=/.test(root.location.search)) setTimeout(function () { enterLobby(); }, 0);
   }
   function relang() {
     if (!room || !room.match || app().screen !== 'game') return;
