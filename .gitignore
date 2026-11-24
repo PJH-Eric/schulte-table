@@ -31,3 +31,6 @@ tests/shots/
 
 # 實作期間的截圖與暫存
 /tmp/
+
+/cloudflare/node_modules/
+/cloudflare/dist/

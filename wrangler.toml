@@ -1,0 +1,19 @@
+# Cloudflare 備援後端（Render 主機連不上時使用）。只放後端（WebSocket + /health），前端仍在 GitHub Pages。
+# 建置：cd cloudflare && npm ci && node build-worker.cjs；部署：npx wrangler deploy（本專案目前只做本機，不部署）
+name = "schulte-table-backup"
+main = "cloudflare/dist/worker.mjs"
+compatibility_date = "2026-11-19"
+compatibility_flags = ["nodejs_compat"]
+workers_dev = true
+
+[[durable_objects.bindings]]
+name = "LOBBY"
+class_name = "GameLobby"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["GameLobby"]
+
+[observability]
+enabled = true
+head_sampling_rate = 1

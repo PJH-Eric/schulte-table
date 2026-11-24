@@ -1,0 +1,17 @@
+# Render Blueprint：只部署後端（HTTP + WebSocket）。前端由 GitHub Pages 提供。
+# 主機：Render（singapore）；備援：Cloudflare Worker（見 wrangler.toml 與 cloudflare/）。
+# 注意：Render 不能修改既有服務的 region，這份設定只對「新建」的服務生效。本專案目前不實際部署。
+services:
+  - type: web
+    name: schulte-table
+    runtime: node
+    region: singapore
+    plan: free
+    buildCommand: echo "no build step"
+    startCommand: node server.js
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: GAME_ALLOWED_ORIGIN
+        sync: false   # 填 GitHub Pages 的網址，例如 https://<帳號>.github.io
