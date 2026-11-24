@@ -138,7 +138,7 @@ async function check(p, view) {
     for (const el of document.querySelectorAll('input[type=text]')) if (vis(el) && !el.closest('.input-wrap') && !el.closest('.lc-root')) issues.push('nativeInput ' + name(el));
     /* 盤面 */
     const board = document.querySelector('#scr-game:not([hidden]) .board');
-    if (board && !document.querySelector('#pause-layer:not([hidden])')) {
+    if (board && vis(board) && !document.querySelector('#pause-layer:not([hidden])')) {
       const br = board.getBoundingClientRect();
       if (br.width < 60) issues.push('boardTiny ' + Math.round(br.width));
       if (br.bottom > H + 1 || br.right > W + 1 || br.top < 0) issues.push('boardOut ' + JSON.stringify([br.left, br.top, br.right, br.bottom].map(Math.round)));

@@ -819,3 +819,4 @@ body .lc-root { --lc-accent: var(--accent); --lc-accent-ink: var(--accent-ink); 
 .g-flash.good { background: #f5b301; color: #3a2400; }
 @media (orientation: landscape) and (max-height: 560px) { .g-flash { top: auto; bottom: 0; transform: translateX(-50%); font-size: 14px; } }
 #scr-lobby .page { padding-bottom: calc(96px + env(safe-area-inset-bottom)); }
+[data-theme="candy"] .cell .own { box-shadow: 0 0 0 2px #fff, 0 0 0 3.5px rgba(59,31,74,.45); }
