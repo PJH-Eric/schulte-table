@@ -138,6 +138,7 @@
     el.innerHTML = '<div class="draw-card" role="status" aria-live="assertive"><p class="draw-title">' + K.icon('dice') + '<span>' + K.esc(t('draw.title')) + '</span></p>' +
       '<div class="draw-slots"><div class="draw-slot" id="draw-c"></div><div class="draw-slot" id="draw-o"></div></div></div>';
     var i = 0, reduce = root.Store.settings().reduceMotion;
+    $('hud-next').style.visibility = 'hidden';   // 抽籤結束前不透露內容
     var total = reduce ? 1 : 9;
     (function spin() {
       var last = i >= total - 1;
@@ -148,7 +149,7 @@
       if (last) {
         el.querySelector('.draw-card').classList.add('landed');
         root.Sound.play('pop');
-        setTimeout(function () { el.hidden = true; el.innerHTML = ''; done(); }, reduce ? 900 : 700);
+        setTimeout(function () { el.hidden = true; el.innerHTML = ''; $('hud-next').style.visibility = ''; done(); }, reduce ? 900 : 700);
         return;
       }
       i++;
@@ -164,7 +165,7 @@
     clearTimeout(flashT); flashT = setTimeout(function () { el.hidden = true; }, 1100);
   }
   function setFoot(html) { var el = $('g-foot'); if (el) el.innerHTML = html || ''; }
-  function close() { stopClock(); cancelCountdown(); hidePause(); var d = $('draw-layer'); d.hidden = true; d.innerHTML = ''; }
+  function close() { stopClock(); cancelCountdown(); hidePause(); var d = $('draw-layer'); d.hidden = true; d.innerHTML = ''; $('hud-next').style.visibility = ''; }
 
   root.GameView = {
     init: init, open: open, startClock: startClock, stopClock: stopClock, setTime: setTime, setProgress: setProgress, setNext: setNext,
