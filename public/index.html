@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="zh-Hant" data-theme="wood">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#3a2414">
+<title>舒爾特方格｜免費線上專注力訓練・手機平板都能玩</title>
+<!--SEO:HEAD-->
+<script>window.GAME_ANALYTICS_CONFIG={"measurement_id":"G-PG79WZK8QY","game_id":"schulte-table","page_location":"https://pjh-eric.github.io/schulte-table/"};</script>
+<meta name="description" data-i18n-content="doc.desc" content="免費免下載的舒爾特方格專注力訓練：依序點完數字、注音、英文字母或圖案。五段難度、經典／逆序／隨機、闖關 50 關、每日挑戰，也能線上多人同盤搶點或同題競速，手機平板都能玩。">
+<link rel="canonical" href="https://pjh-eric.github.io/schulte-table/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:title" content="舒爾特方格｜免費線上專注力訓練・手機平板都能玩">
+<meta property="og:description" content="免費免下載的舒爾特方格專注力訓練：依序點完數字、注音、英文字母或圖案。五段難度、經典／逆序／隨機、闖關 50 關、每日挑戰，也能線上多人同盤搶點或同題競速，手機平板都能玩。">
+<meta property="og:url" content="https://pjh-eric.github.io/schulte-table/">
+<meta property="og:image" content="https://pjh-eric.github.io/schulte-table/assets/images/seo.webp">
+<meta property="og:image:alt" content="舒爾特方格遊戲分享圖：麻將牌、糖果與科技三種主題的數字方格">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="舒爾特方格｜免費線上專注力訓練・手機平板都能玩">
+<meta name="twitter:description" content="免費免下載的舒爾特方格專注力訓練：依序點完數字、注音、英文字母或圖案。五段難度、經典／逆序／隨機、闖關 50 關、每日挑戰，也能線上多人同盤搶點或同題競速，手機平板都能玩。">
+<meta name="twitter:image" content="https://pjh-eric.github.io/schulte-table/assets/images/seo.webp">
+<!--SEO:END-->
+<link rel="icon" type="image/svg+xml" sizes="any" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="96x96" href="favicon-96.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/lobby-chat.css">
+<link rel="stylesheet" href="css/latency.css">
+<link rel="stylesheet" href="css/server-outage.css">
+<script src="js/server-outage.js"></script>
+</head>
+<body>
+<div id="app" data-screen="boot" data-side="closed" data-theme="wood">
+  <header id="topbar" class="topbar">
+    <div class="top-left">
+      <a id="btn-lobby" class="pill-btn lobby-pill" href="#" hidden><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 5l-7 7 7 7"/></svg><span data-i18n="top.lobby">遊戲大廳</span></a>
+      <button id="btn-back" class="icon-btn" type="button" hidden data-i18n-attr="aria-label=top.back;title=top.back"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <button id="btn-side" class="icon-btn" type="button" hidden aria-expanded="false" aria-controls="side" data-i18n-attr="aria-label=top.side;title=top.side"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3.5" y="4.5" width="17" height="15" rx="2"/><path d="M9.5 4.5v15"/></svg><i id="side-badge" class="badge" hidden>0</i></button>
+    </div>
+    <div class="top-title" id="top-title" aria-live="polite"></div>
+    <div class="top-right">
+      <span class="lat-slot"></span>
+      <button id="btn-pause" class="icon-btn" type="button" hidden data-i18n-attr="aria-label=top.pause;title=top.pause"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M9 5.5v13M15 5.5v13"/></svg></button>
+      <button id="btn-lang" class="icon-btn" type="button" aria-haspopup="listbox" aria-expanded="false" data-i18n-attr="aria-label=top.lang;title=top.lang"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="8.6"/><path d="M3.6 12h16.8M12 3.4c2.6 2.6 3.6 5.5 3.6 8.6s-1 6-3.6 8.6c-2.6-2.6-3.6-5.5-3.6-8.6s1-6 3.6-8.6z"/></svg></button>
+      <button id="btn-settings" class="icon-btn" type="button" aria-haspopup="dialog" data-i18n-attr="aria-label=top.settings;title=top.settings"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.8v2.6M12 18.6v2.6M21.2 12h-2.6M5.4 12H2.8M18.5 5.5l-1.8 1.8M7.3 16.7l-1.8 1.8M18.5 18.5l-1.8-1.8M7.3 7.3L5.5 5.5"/><circle cx="12" cy="12" r="6.4"/></svg></button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section id="scr-home" class="screen scroll" hidden></section>
+    <section id="scr-solo" class="screen scroll" hidden></section>
+    <section id="scr-setup" class="screen scroll" hidden></section>
+    <section id="scr-levels" class="screen scroll" hidden></section>
+    <section id="scr-daily" class="screen scroll" hidden></section>
+    <section id="scr-records" class="screen scroll" hidden></section>
+    <section id="scr-help" class="screen scroll" hidden></section>
+    <section id="scr-lobby" class="screen scroll" hidden></section>
+    <section id="scr-room" class="screen scroll" hidden></section>
+    <section id="scr-game" class="screen" hidden>
+      <div id="side-backdrop" class="side-backdrop" hidden></div>
+      <aside id="side" class="side" data-i18n-attr="aria-label=side.aria">
+        <div class="side-head"><h2 class="side-title" data-i18n="side.summary">對局資訊</h2>
+          <button id="side-close" class="icon-btn small" type="button" data-i18n-attr="aria-label=common.close"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+        <div id="summary" class="summary scroll"></div>
+        <section id="chatbox" class="chatbox" hidden data-i18n-attr="aria-label=chat.title">
+          <h2 class="side-title small" data-i18n="chat.title">房間聊天</h2>
+          <ul id="chat-list" class="chat-list scroll" aria-live="polite"></ul>
+          <div id="chat-quick" class="chat-quick"></div>
+          <form id="chat-form" class="chat-form" autocomplete="off">
+            <label class="input-wrap"><input id="chat-input" type="text" maxlength="200" data-i18n-attr="placeholder=chat.ph;aria-label=chat.ph"></label>
+            <button type="submit" class="btn small primary icon-only" data-i18n-attr="aria-label=chat.send;title=chat.send"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 12L20 4l-6 16-2.5-6.5z" stroke-linejoin="round"/><path d="M11.5 13.5L20 4"/></svg></button>
+          </form>
+        </section>
+      </aside>
+      <div class="g-main" id="g-main">
+        <div class="hud" id="hud">
+          <div class="hud-cell hud-time" role="timer" aria-live="off"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="13" r="7.5"/><path d="M12 9v4.4l2.8 1.8M9.5 2.8h5M12 2.8v2.6"/></svg><b id="hud-time-num" class="clk">0.00</b></div>
+          <div class="hud-cell hud-prog" id="hud-prog" role="img"><span class="hp-bar"><i></i></span><b id="hud-prog-num" class="clk">0/0</b></div>
+          <div class="hud-cell hud-next" id="hud-next"><small data-i18n="hud.next">下一個</small><span id="hud-next-val" class="hud-next-val" role="status"></span></div>
+        </div>
+        <ul class="hud-scores" id="hud-scores" hidden data-i18n-attr="aria-label=hud.scores"></ul>
+        <ul class="hud-race" id="hud-race" hidden data-i18n-attr="aria-label=hud.race"></ul>
+        <p class="watch-note" id="watch-note" hidden><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2.8 12S6.2 5.8 12 5.8 21.2 12 21.2 12 17.8 18.2 12 18.2 2.8 12 2.8 12z"/><circle cx="12" cy="12" r="2.8"/></svg><span data-i18n="hud.watching">觀戰中</span></p>
+        <div class="board-area">
+          <div class="board-wrap" id="board-wrap"></div>
+          <div id="countdown" class="countdown" role="status" aria-live="assertive" hidden><b class="cd-num"></b></div>
+          <div id="pause-layer" class="pause-layer" hidden></div>
+          <div id="draw-layer" class="draw-layer" hidden></div>
+          <div id="race-done" class="race-done" hidden></div>
+        </div>
+        <p class="g-foot" id="g-foot" aria-live="off"></p>
+      </div>
+      <div id="round-layer" class="round-layer" hidden></div>
+      <div id="result-layer" class="result-layer" hidden></div>
+    </section>
+    <div id="toasts" class="toasts" aria-live="polite"></div>
+    <div id="boot" class="boot" role="status"><div class="boot-grid"><i></i><i></i><i></i><i></i></div></div>
+  </main>
+</div>
+<noscript><p style="padding:24px;font-size:18px">請開啟 JavaScript 才能玩舒爾特方格。</p></noscript>
+
+<script src="js/analytics.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/locales.js"></script>
+<script src="js/config.js"></script>
+<script src="js/lobby-link.js"></script>
+<script src="js/rules.js"></script>
+<script src="js/art/glyphs.js"></script>
+<script src="js/art/icons.js"></script>
+<script src="js/art/render.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/latency.js"></script>
+<script src="js/lobby-chat.js"></script>
+<script src="js/online.js"></script>
+<script src="js/ui/kit.js"></script>
+<script src="js/ui/board.js"></script>
+<script src="js/ui/game.js"></script>
+<script src="js/ui/result.js"></script>
+<script src="js/modes/solo.js"></script>
+<script src="js/modes/online-ui.js"></script>
+<script src="js/app.js"></script>
+<script defer src="js/locales/result-share.js"></script>
+<script defer src="js/result-share.js"></script>
+</body>
+</html>

@@ -1,0 +1,4 @@
+
+[錯誤] 需要 Node.js 22 或更新的版本。
+找到的 node 版本太舊，請安裝新版 Node.js：https://nodejs.org/
+  只想單機玩：直接用瀏覽器打開 public\index.html 就可以了
