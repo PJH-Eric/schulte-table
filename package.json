@@ -1,0 +1,20 @@
+{
+  "name": "schulte-table",
+  "version": "1.0.0",
+  "description": "舒爾特方格：數字、注音、英文字母、圖案依序點完的專注力遊戲。五段難度、經典／逆序／隨機、闖關 50 關、每日挑戰，線上同盤搶點與同題競速、觀戰與邀請連結（零依賴）",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test tests/rules.test.js",
+    "test:rules": "node --test tests/rules.test.js",
+    "test:online": "node tests/online-check.js",
+    "build:glyphs": "node scripts/build-glyphs.cjs",
+    "inject": "node scripts/inject-server-url.js",
+    "inject:seo": "node scripts/inject-seo.js"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "license": "UNLICENSED",
+  "private": true
+}
