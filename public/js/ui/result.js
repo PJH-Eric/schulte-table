@@ -27,7 +27,7 @@
     var K = root.Kit;
     var layer = $('result-layer');
     var keep = relang && doc.activeElement && layer.contains(doc.activeElement) ? doc.activeElement.getAttribute('data-act') : null;
-    var html = '<div class="result-card tone-' + (o.tone || 'plain') + '" role="dialog" aria-modal="true" aria-labelledby="res-title" data-result-share>' +
+    var html = '<div class="result-card tone-' + (o.tone || 'plain') + '" role="dialog" aria-modal="true" aria-labelledby="res-title" data-result-share><div class="res-info">' +
       '<div class="res-head"><span class="res-trophy">' + K.icon(o.tone === 'win' ? 'trophy' : o.tone === 'good' ? 'sparkle' : 'flag') + '</span>' +
       '<div class="res-titles"><h2 id="res-title" class="res-title">' + K.esc(o.title) + '</h2>' + (o.sub ? '<p class="res-sub">' + K.esc(o.sub) + '</p>' : '') + '</div></div>';
     if (o.big != null) html += '<div class="res-big"><small>' + K.esc(o.bigLabel || '') + '</small><b>' + K.esc(o.big) + '</b></div>';
@@ -43,7 +43,7 @@
         return '<li class="' + (r.me ? 'me' : '') + '"><b class="rk">' + r.rank + '</b>' + K.badge(r.seat) + '<span class="rk-name">' + K.esc(r.name) + '</span><span class="rk-info">' + K.esc(r.info) + '</span></li>';
       }).join('') + '</ol>';
     }
-    html += '<div class="res-actions">' +
+    html += '</div><div class="res-actions">' +
       (o.again ? btn('again', 'primary', o.again.icon || 'refresh', o.again.label || t('res.again')) : '') +
       (o.extra ? btn('extra', '', o.extra.icon || 'refresh', o.extra.label) : '') +
       (o.back ? btn('back', '', o.back.icon || 'grid', o.back.label) : '') +

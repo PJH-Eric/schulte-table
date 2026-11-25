@@ -596,6 +596,7 @@ button { cursor: pointer; -webkit-tap-highlight-color: transparent; touch-action
 .round-layer { z-index: 45; background: rgba(10, 6, 2, .35); }
 .result-card, .round-card { width: min(460px, 100%); max-height: 100%; overflow: auto; display: flex; flex-direction: column; gap: 10px; padding: 18px; background: var(--panel-solid); color: var(--text); border: 2px solid var(--panel-edge); border-radius: var(--radius); box-shadow: 0 24px 60px rgba(0,0,0,.45); animation: popIn .28s cubic-bezier(.2,1.4,.4,1); scrollbar-width: thin; scrollbar-color: var(--scroll-thumb) var(--scroll-track); }
 .result-layer.relang .result-card { animation: none; }
+.res-info { display: flex; flex-direction: column; gap: inherit; min-width: 0; }
 .res-head { display: flex; align-items: center; gap: 12px; }
 .res-trophy { width: 56px; height: 56px; flex: none; display: grid; place-items: center; border-radius: 50%; background: var(--accent); color: var(--accent-ink); }
 .res-trophy .ico { width: 30px; height: 30px; }
@@ -793,6 +794,12 @@ body .lc-root { --lc-accent: var(--accent); --lc-accent-ink: var(--accent-ink); 
   .bb-ico { width: 42px; height: 42px; }
   .result-card { padding: 12px; gap: 8px; }
   .res-big b { font-size: 32px; }
+  /* 矮橫向：左欄成績、右欄動作與分享，按鈕不必捲動就看得到 */
+  .result-card { width: min(780px, 100%); display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); grid-template-rows: auto 1fr; column-gap: 16px; row-gap: 8px; align-items: start; }
+  .res-info { grid-row: 1 / span 2; }
+  .res-actions { grid-column: 2; grid-row: 1; grid-template-columns: 1fr; }
+  .res-actions .btn:last-child:nth-child(even) { grid-column: auto; }
+  .result-card .result-share { grid-column: 2; grid-row: 2; margin: 0; }
 }
 
 /* 大廳聊天面板（寬版浮動 300px）展開時，大廳內容讓出左側，不被蓋住 */
