@@ -19,7 +19,7 @@
     "cf:smoke": "node cloudflare/smoke.mjs"
   },
   "engines": {
-    "node": ">=22"
+    "node": "^26.12.1"
   },
   "license": "UNLICENSED",
   "private": true

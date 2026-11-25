@@ -9,7 +9,7 @@
 
 ## 啟動
 
-需要 Node.js 22 以上，**不需要 `npm install`**（伺服器零依賴）。
+需要 Node.js 26.12.1 以上的 26.x，**不需要 `npm install`**（伺服器零依賴）。
 
 - Windows：雙擊 `啟動遊戲.bat`，會開啟 <http://localhost:3120>
 - 其他：`npm start`，再開 <http://localhost:3120>

@@ -6,7 +6,7 @@ cd /d "%~dp0"
 rem ASCII-only on purpose: after chcp 65001 cmd mis-reads byte offsets around
 rem labels when multibyte text precedes them. Chinese messages live in
 rem scripts\launcher\*.txt and are shown with type.
-rem Picks the first node that is 22+ (PATH, common install dirs, then nvm).
+rem Picks the first node that is 26.12.1+ (PATH, common install dirs, then nvm).
 
 set "NODE_EXE="
 set "NODE_FROM_PATH="
@@ -17,7 +17,7 @@ for /f "delims=" %%N in ('where node 2^>nul') do call :try "%%N" 1
 call :try "%ProgramFiles%\nodejs\node.exe"
 call :try "%ProgramFiles(x86)%\nodejs\node.exe"
 call :try "%LOCALAPPDATA%\Programs\nodejs\node.exe"
-if not defined NODE_EXE for /f "delims=" %%D in ('dir /b /a:d /o:-n "%APPDATA%\nvm\v2*" 2^>nul') do call :try "%APPDATA%\nvm\%%D\node.exe"
+if not defined NODE_EXE for /f "delims=" %%D in ('dir /b /a:d /o:-n "%APPDATA%\nvm\v26.*" 2^>nul') do call :try "%APPDATA%\nvm\%%D\node.exe"
 
 if not defined NODE_EXE goto :nonode
 if defined NODE_FROM_PATH goto :run
@@ -29,7 +29,7 @@ goto :run
 :try
 if defined NODE_EXE exit /b 0
 if not exist %1 exit /b 0
-%1 -e "process.exit(Number(process.versions.node.split('.')[0])>=22?0:1)"
+%1 -e "const [a,b,c]=process.versions.node.split('.').map(Number); process.exit(a===26&&(b>12||(b===12&&c>=1))?0:1)"
 if errorlevel 1 set "NODE_BAD=%~1"
 if errorlevel 1 exit /b 0
 set "NODE_EXE=%~1"
