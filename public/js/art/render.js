@@ -24,7 +24,7 @@
 
   /** 一格的內容（不含格子本身） */
   function cell(content, v, shape) {
-    if (content === 'icon') return root.Icons.pips(v + 1, shape);
+    if (content === 'icon') return root.Icons.pics(v + 1, shape);
     return glyphs(R.label(content, v), content);
   }
   /** 只畫文字（頂列「下一個」、結算等） */

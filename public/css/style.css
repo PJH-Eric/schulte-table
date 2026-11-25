@@ -555,6 +555,7 @@ button { cursor: pointer; -webkit-tap-highlight-color: transparent; touch-action
 [data-theme="tech"] .cell.done .glyph { filter: none; }
 
 .cell.done .cell-face { opacity: .36; }
+.cell.done .pics { filter: grayscale(.75); }
 [data-theme="tech"] .cell.done .cell-face { opacity: .3; }
 .cell.done .own { opacity: 1; }
 .cell.pending { filter: brightness(.82); }

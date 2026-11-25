@@ -117,6 +117,40 @@
     return '<svg class="pips" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><path d="' + d + '" fill="currentColor"/></svg>';
   }
 
+  /* 盤面圖案：水果 6 種＋動物 6 種，100×100 座標、中心 (50,50)，保留原本的顏色（只比數量，不比種類） */
+  var OL = ' stroke="#3b2a1a" stroke-width="3" stroke-linejoin="round"';
+  var EYE = function (x, y) { return '<circle cx="' + x + '" cy="' + y + '" r="5" fill="#222"/><circle cx="' + (x + 1.6) + '" cy="' + (y - 1.8) + '" r="1.7" fill="#fff"/>'; };
+  var PICS = [
+    /* 蘋果 */ '<path d="M49 32C48 22 50 14 55 8" stroke="#6d4c2f" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M55 18C63 6 79 8 82 12C75 22 63 25 55 18Z" fill="#43a047"/><path d="M50 30C35 18 11 26 13 52C15 78 34 93 50 86C66 93 85 78 87 52C89 26 65 18 50 30Z" fill="#e53935"' + OL + '/><ellipse cx="31" cy="48" rx="6" ry="11" fill="#fff" opacity=".45"/>',
+    /* 香蕉 */ '<path d="M12 28C12 70 50 94 88 72C90 68 88 62 84 63C56 74 31 60 25 28Z" fill="#fdd835"' + OL + '/><path d="M12 28L15 15L25 28Z" fill="#6d4c2f"/><path d="M30 46C38 62 56 70 72 68" stroke="#e0a800" stroke-width="3" fill="none" stroke-linecap="round"/>',
+    /* 葡萄 */ '<path d="M50 26V12" stroke="#6d4c2f" stroke-width="5" stroke-linecap="round"/><path d="M52 18C58 6 74 6 78 12C72 22 60 24 52 18Z" fill="#43a047"/>' +
+      [[33, 36], [50, 36], [67, 36], [41.5, 54], [58.5, 54], [50, 72]].map(function (p) { return '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="11.5" fill="#8e24aa"' + OL + '/><circle cx="' + (p[0] - 4) + '" cy="' + (p[1] - 4) + '" r="3" fill="#fff" opacity=".5"/>'; }).join(''),
+    /* 橘子 */ '<circle cx="50" cy="55" r="36" fill="#fb8c00"' + OL + '/><path d="M50 20C54 10 66 8 74 12C68 22 58 24 50 20Z" fill="#43a047"/><circle cx="50" cy="22" r="3" fill="#6d4c2f"/><ellipse cx="36" cy="44" rx="7" ry="10" fill="#fff" opacity=".4"/>',
+    /* 西瓜 */ '<path d="M6 30A44 44 0 0 0 94 30Z" fill="#43a047"' + OL + '/><path d="M15 30A35 35 0 0 0 85 30Z" fill="#ef5350"/>' +
+      [[33, 42], [50, 48], [67, 42], [41, 58], [59, 58]].map(function (p) { return '<ellipse cx="' + p[0] + '" cy="' + p[1] + '" rx="2.6" ry="4" fill="#222"/>'; }).join(''),
+    /* 草莓 */ '<path d="M50 92C22 76 12 50 19 36C26 24 40 27 50 31C60 27 74 24 81 36C88 50 78 76 50 92Z" fill="#e53935"' + OL + '/><path d="M28 30L38 16L50 26L62 16L72 30L50 38Z" fill="#43a047"' + OL + '/>' +
+      [[36, 48], [50, 46], [64, 48], [42, 62], [58, 62], [50, 76]].map(function (p) { return '<ellipse cx="' + p[0] + '" cy="' + p[1] + '" rx="2.2" ry="3.2" fill="#ffeb3b"/>'; }).join(''),
+    /* 小雞 */ '<path d="M44 20C42 10 52 8 50 18M50 20C54 10 62 12 56 20" stroke="#f9a825" stroke-width="4" fill="none" stroke-linecap="round"/><circle cx="50" cy="56" r="35" fill="#ffd54f"' + OL + '/>' + EYE(38, 50) + EYE(62, 50) +
+      '<path d="M42 60H58L50 72Z" fill="#fb8c00"' + OL + '/><circle cx="28" cy="64" r="5" fill="#ff8a80" opacity=".7"/><circle cx="72" cy="64" r="5" fill="#ff8a80" opacity=".7"/>',
+    /* 小豬 */ '<path d="M18 36L22 10L42 24Z" fill="#f48fb1"' + OL + '/><path d="M82 36L78 10L58 24Z" fill="#f48fb1"' + OL + '/><circle cx="50" cy="55" r="36" fill="#f8bbd0"' + OL + '/>' + EYE(36, 46) + EYE(64, 46) +
+      '<ellipse cx="50" cy="66" rx="15" ry="11" fill="#f06292"' + OL + '/><ellipse cx="44.5" cy="66" rx="2.6" ry="4" fill="#5d1a33"/><ellipse cx="55.5" cy="66" rx="2.6" ry="4" fill="#5d1a33"/>',
+    /* 青蛙 */ '<circle cx="29" cy="30" r="15" fill="#66bb6a"' + OL + '/><circle cx="71" cy="30" r="15" fill="#66bb6a"' + OL + '/><ellipse cx="50" cy="60" rx="42" ry="30" fill="#66bb6a"' + OL + '/>' +
+      '<circle cx="29" cy="30" r="9" fill="#fff"/><circle cx="71" cy="30" r="9" fill="#fff"/><circle cx="30" cy="31" r="4.5" fill="#222"/><circle cx="72" cy="31" r="4.5" fill="#222"/>' +
+      '<path d="M30 64Q50 80 70 64" stroke="#1b5e20" stroke-width="4" fill="none" stroke-linecap="round"/><circle cx="22" cy="62" r="5" fill="#ff8a80" opacity=".6"/><circle cx="78" cy="62" r="5" fill="#ff8a80" opacity=".6"/>',
+    /* 小魚 */ '<path d="M70 50L94 28V72Z" fill="#1e88e5"' + OL + '/><ellipse cx="42" cy="50" rx="34" ry="24" fill="#42a5f5"' + OL + '/><path d="M40 28Q48 16 60 30" fill="#1e88e5"' + OL + '/>' + EYE(26, 46) +
+      '<path d="M48 36Q56 50 48 64" stroke="#1565c0" stroke-width="3" fill="none"/>',
+    /* 熊貓 */ '<circle cx="22" cy="24" r="13" fill="#222"/><circle cx="78" cy="24" r="13" fill="#222"/><circle cx="50" cy="55" r="37" fill="#fafafa"' + OL + '/>' +
+      '<ellipse cx="35" cy="50" rx="10" ry="13" transform="rotate(-25 35 50)" fill="#222"/><ellipse cx="65" cy="50" rx="10" ry="13" transform="rotate(25 65 50)" fill="#222"/><circle cx="36" cy="48" r="3.5" fill="#fff"/><circle cx="64" cy="48" r="3.5" fill="#fff"/>' +
+      '<ellipse cx="50" cy="66" rx="7" ry="5" fill="#222"/><path d="M44 76Q50 81 56 76" stroke="#222" stroke-width="3" fill="none" stroke-linecap="round"/>',
+    /* 小貓 */ '<path d="M14 40L18 6L44 24Q50 22 56 24L82 6L86 40Q94 74 50 92Q6 74 14 40Z" fill="#ffa726"' + OL + '/><path d="M23 16L26 32L36 25Z" fill="#ffccbc"/><path d="M77 16L74 32L64 25Z" fill="#ffccbc"/>' + EYE(36, 52) + EYE(64, 52) +
+      '<path d="M45 64H55L50 70Z" fill="#ec407a"/><path d="M12 62H32M14 72L32 67M88 62H68M86 72L68 67" stroke="#5d4037" stroke-width="2.5" stroke-linecap="round"/>'
+  ];
+  function pics(count, kind) {
+    var pos = pipPositions(count), art = PICS[(kind || 0) % PICS.length], s = pos.r * 2.45 / 100, out = '';
+    pos.pts.forEach(function (p) { out += '<g transform="translate(' + f(p[0] - pos.r * 1.225) + ' ' + f(p[1] - pos.r * 1.225) + ') scale(' + s.toFixed(3) + ')">' + art + '</g>'; });
+    return '<svg class="pips pics" viewBox="0 0 100 100" aria-hidden="true" focusable="false">' + out + '</svg>';
+  }
+
   /* 玩家形狀（色彩輔助）：圓、方、三角、菱形、星、六角 */
   var PLAYER_SHAPES = [0, 1, 2, 3, 4, 6];
   function playerShape(seat, cls) {
@@ -124,5 +158,5 @@
     return '<svg class="pshape ' + (cls || '') + '" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="' + fn(12, 12, 8) + '" fill="currentColor"/></svg>';
   }
 
-  root.Icons = { icon: icon, pips: pips, pipPositions: pipPositions, playerShape: playerShape, PIP_COUNT: PIP.length, names: Object.keys(P) };
+  root.Icons = { icon: icon, pips: pips, pics: pics, pipPositions: pipPositions, playerShape: playerShape, PIP_COUNT: PIP.length, names: Object.keys(P) };
 })(typeof self !== 'undefined' ? self : this);
