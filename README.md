@@ -47,7 +47,7 @@ cloudflare/          備援後端打包（Durable Object）
 
 - **遊玩網址**：<https://pjh-eric.github.io/schulte-table/>（也列在遊戲大廳 <https://pjh-eric.github.io/game-lobby/>）
 - **前端**：GitHub Pages（`.github/workflows/pages.yml`），推到 `main` 自動部署。repo Variable `GAME_SERVER_URL` 建置時注入 `public/js/config.js`，並執行 `scripts/inject-seo.js` 注入 GA4／SEO。
-- **後端**：Cloudflare Worker `schulte-table-backup`（<https://schulte-table-backup.eric-games.workers.dev>，`wrangler.toml`）。更新方式：`cd cloudflare && npm ci && node build-worker.cjs`，回到根目錄 `wrangler deploy`。
+- **後端**：Cloudflare Worker `schulte-table-backup`（<https://schulte-table-backup.eric-games.workers.dev>，`wrangler.toml`）。自動部署：Cloudflare 後台 Workers Builds 連 GitHub，push 到 `main` 即部署，Deploy command 只需 `npx wrangler deploy`（`wrangler.toml` 的 `[build]` 會先 `npm ci` 並打包；`build-worker.cjs` 在 Cloudflare 的 `repo/` 資料夾內會改用 Worker 名稱判斷遊戲 ID，也可設變數 `GAME_ID=schulte-table`；`NODE_VERSION` 設 26.13.1）。手動部署：根目錄 `npx wrangler deploy`。
 - **Render**：免費額度已滿，目前沒有建立 Render 服務，`public/js/backend-routing.js` 設定為只用 Cloudflare。要恢復「Render 主、Cloudflare 備援」：用 `render.yaml` 建立 `schulte-table` 服務（`region: singapore`），把 `backend-routing.js` 的 `[null, '/ws']` 改成 `['<Render 服務名稱>', '/ws']`，並把 `GAME_SERVER_URL` 改成 Render 網址。
 - **路由**：`backend-routing.js` 只在 `https://pjh-eric.github.io` 生效；邀請連結帶 `?backend=` 釘選同一台，進房後記在 sessionStorage，重新整理回到同一台。本機與 `?server=` 測試網址直接連線。
 - 首頁與單機完全不連線；只有進入線上大廳或打開邀請連結才連線。

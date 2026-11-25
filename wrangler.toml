@@ -1,10 +1,15 @@
 # Cloudflare 後端（目前唯一的線上後端；Render 免費額度已滿）。只放後端（WebSocket + /health），前端在 GitHub Pages。
-# 建置：cd cloudflare && npm ci && node build-worker.cjs；部署：在根目錄執行 wrangler deploy
+# 部署：Cloudflare Workers Builds 連 GitHub，push 到 main 後 Deploy command 只需「npx wrangler deploy」；下方 [build] 會先自動打包。
+# 手動部署：在根目錄執行 npx wrangler deploy（同樣會先打包）。Worker 名稱必須與後台一致（schulte-table-backup）。
 name = "schulte-table-backup"
 main = "cloudflare/dist/worker.mjs"
 compatibility_date = "2026-11-19"
 compatibility_flags = ["nodejs_compat"]
 workers_dev = true
+
+[build]
+command = "cd cloudflare && npm ci --no-audit --no-fund && node build-worker.cjs"
+watch_dir = ["server.js", "lib", "cloudflare/worker.mjs", "cloudflare/runtime.mjs", "cloudflare/build.cjs"]
 
 [[durable_objects.bindings]]
 name = "LOBBY"
@@ -17,3 +22,14 @@ new_sqlite_classes = ["GameLobby"]
 [observability]
 enabled = true
 head_sampling_rate = 1
+
+[observability.logs]
+enabled = true
+head_sampling_rate = 1
+persist = true
+invocation_logs = true
+
+[observability.traces]
+enabled = true
+head_sampling_rate = 1
+persist = true
