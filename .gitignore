@@ -34,3 +34,4 @@ tests/shots/
 
 /cloudflare/node_modules/
 /cloudflare/dist/
+.wrangler/
