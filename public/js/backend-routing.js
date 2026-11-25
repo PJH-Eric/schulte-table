@@ -1,6 +1,7 @@
 /* ===== backend-routing.js — 線上後端主備切換（沿用 game-lobby 的 backend-router，原樣複製）=====
  * 只在 https://pjh-eric.github.io 生效；本機與 ?server= 測試網址直接連線。
- * 連線前先探測 Render（https://schulte-table.onrender.com），連不上就改用 Cloudflare（https://schulte-table-backup.eric-games.workers.dev）。
+ * 目前只用 Cloudflare（https://schulte-table-backup.eric-games.workers.dev）：Render 免費額度已滿，無法新建服務。
+ * 之後要恢復「Render 主、Cloudflare 備援」：建立 Render 服務後把下方 settings 的 null 改成 Render 服務名稱即可。
  * 邀請連結會帶上 ?backend= 釘選同一台後端；進房後記在 sessionStorage，重新整理回到同一台。
  */
 (function (root, factory) {
@@ -106,9 +107,9 @@
   // Explicit test URLs remain direct connections.
   if (query.has('server')) return;
 
-  /* 舒爾特方格：Render（主）→ Cloudflare Worker（備援）。自帶設定，不依賴遊戲大廳的路由表。 */
+  /* 舒爾特方格：[Render 服務名稱或 null, WebSocket 路徑]。null＝只用 Cloudflare Worker。自帶設定，不依賴遊戲大廳的路由表。 */
   const settings = {
-    'schulte-table': ['schulte-table', '/ws']
+    'schulte-table': [null, '/ws']
   };
 
   const config = settings[game];
@@ -119,16 +120,12 @@
     id: 'cloudflare', url: 'https://' + workerName + '.eric-games.workers.dev',
     websocketPath, timeoutMs: 5000
   };
-  // The Render service for Bomb Squad needs a confirmed endpoint.
   const origin = renderName ? {
     id: 'render', url: 'https://' + renderName + '.onrender.com',
     websocketPath, timeoutMs: 12000
-  } : {
-    id: 'oracle', url: 'https://bomb-squad.duckdns.org',
-    websocketPath, timeoutMs: 8000
-  };
+  } : null;
   const oracleUrl = oraclePilotOrigins[game];
-  let endpoints = [origin, cloudflare];
+  let endpoints = origin ? [origin, cloudflare] : [cloudflare];
   if (oracleUrl) {
     const oracle = { id: 'oracle', url: oracleUrl, websocketPath, timeoutMs: 5000 };
     const render = { ...origin, timeoutMs: 3000, wakeTimeoutMs: 45000 };

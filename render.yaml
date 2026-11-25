@@ -1,6 +1,6 @@
 # Render Blueprint：只部署後端（HTTP + WebSocket）。前端由 GitHub Pages 提供。
 # 主機：Render（singapore）；備援：Cloudflare Worker（見 wrangler.toml 與 cloudflare/）。
-# 注意：Render 不能修改既有服務的 region，這份設定只對「新建」的服務生效。本專案目前不實際部署。
+# 注意：Render 不能修改既有服務的 region，這份設定只對「新建」的服務生效。目前 Render 免費額度已滿，尚未建立這個服務（線上後端只用 Cloudflare，見 README）。
 services:
   - type: web
     name: schulte-table

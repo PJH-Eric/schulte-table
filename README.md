@@ -22,7 +22,7 @@
 | `npm test` | 規則核心、房間邏輯單元測試＋真的開伺服器跑多客戶端線上流程 | 只要 Node |
 | `node scripts/flow-check.cjs` | 單機流程、紀錄、闖關解鎖、每日只計第一次、單機零連線 | playwright、執行中的伺服器 |
 | `node scripts/rwd-audit.cjs <輪次> [畫面,…]` | 全畫面 × 6 種裝置 × 語言 × 主題的 RWD 巡檢與截圖（`tmp/audit/`） | 同上 |
-| `node scripts/failover-check.cjs` | Render → Cloudflare 主備切換與邀請連結釘選 | 同上 |
+| `node scripts/failover-check.cjs` | 正式網址的後端路由（只連 Cloudflare、不碰 Render）與邀請連結釘選 | 同上 |
 | `node cloudflare/smoke.mjs` | 打包後的 Cloudflare 備援後端在模擬 Durable Object 中跑完一局 | 先 `node cloudflare/build-worker.cjs` |
 
 playwright 不在本專案依賴中；開發時用 `NODE_PATH` 指向已安裝的 playwright，`PW_CHROME` 可指定瀏覽器執行檔。
@@ -43,10 +43,11 @@ cloudflare/          備援後端打包（Durable Object）
 字形：`node scripts/build-glyphs.cjs <NotoSansTC-Regular.ttf>` 重新產生 `public/js/art/glyphs.js`（授權見 `licenses/NotoSansTC-OFL.txt`）。
 圖示與分享圖：`node scripts/build-art.cjs`（伺服器執行中）。
 
-## 部署準備（目前只做本機，未部署）
+## 部署
 
-- **前端**：GitHub Pages（`.github/workflows/pages.yml`）。repo Variables 只要設 `GAME_SERVER_URL`（Render 網址），建置時注入 `public/js/config.js`，並執行 `scripts/inject-seo.js` 注入 GA4／SEO。
-- **主後端**：Render（`render.yaml`，`region: singapore`），`GAME_ALLOWED_ORIGIN` 填 Pages 網址。
-- **備援後端**：Cloudflare Worker `schulte-table-backup`（`wrangler.toml`）。`cd cloudflare && npm ci && node build-worker.cjs` 後 `npx wrangler deploy`。
-- **切換方式**：`public/js/backend-routing.js` 只在 `https://pjh-eric.github.io` 生效：先探測 Render，連不上就改連 Cloudflare；邀請連結帶 `?backend=` 釘選同一台，進房後記在 sessionStorage，重新整理回到同一台。本機與 `?server=` 測試網址直接連線。
+- **遊玩網址**：<https://pjh-eric.github.io/schulte-table/>（也列在遊戲大廳 <https://pjh-eric.github.io/game-lobby/>）
+- **前端**：GitHub Pages（`.github/workflows/pages.yml`），推到 `main` 自動部署。repo Variable `GAME_SERVER_URL` 建置時注入 `public/js/config.js`，並執行 `scripts/inject-seo.js` 注入 GA4／SEO。
+- **後端**：Cloudflare Worker `schulte-table-backup`（<https://schulte-table-backup.eric-games.workers.dev>，`wrangler.toml`）。更新方式：`cd cloudflare && npm ci && node build-worker.cjs`，回到根目錄 `wrangler deploy`。
+- **Render**：免費額度已滿，目前沒有建立 Render 服務，`public/js/backend-routing.js` 設定為只用 Cloudflare。要恢復「Render 主、Cloudflare 備援」：用 `render.yaml` 建立 `schulte-table` 服務（`region: singapore`），把 `backend-routing.js` 的 `[null, '/ws']` 改成 `['<Render 服務名稱>', '/ws']`，並把 `GAME_SERVER_URL` 改成 Render 網址。
+- **路由**：`backend-routing.js` 只在 `https://pjh-eric.github.io` 生效；邀請連結帶 `?backend=` 釘選同一台，進房後記在 sessionStorage，重新整理回到同一台。本機與 `?server=` 測試網址直接連線。
 - 首頁與單機完全不連線；只有進入線上大廳或打開邀請連結才連線。

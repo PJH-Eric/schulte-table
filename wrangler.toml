@@ -1,5 +1,5 @@
-# Cloudflare 備援後端（Render 主機連不上時使用）。只放後端（WebSocket + /health），前端仍在 GitHub Pages。
-# 建置：cd cloudflare && npm ci && node build-worker.cjs；部署：npx wrangler deploy（本專案目前只做本機，不部署）
+# Cloudflare 後端（目前唯一的線上後端；Render 免費額度已滿）。只放後端（WebSocket + /health），前端在 GitHub Pages。
+# 建置：cd cloudflare && npm ci && node build-worker.cjs；部署：在根目錄執行 wrangler deploy
 name = "schulte-table-backup"
 main = "cloudflare/dist/worker.mjs"
 compatibility_date = "2026-11-19"
