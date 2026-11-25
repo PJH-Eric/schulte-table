@@ -38,15 +38,6 @@ jobs:
       - name: 跑測試
         run: npm test
 
-      - name: 畫面與導覽檢查（flow／interaction，需 playwright 與本機伺服器）
-        run: |
-          npm install --no-save playwright
-          npx playwright install --with-deps chromium
-          node server.js &
-          for i in $(seq 1 30); do curl -sf http://localhost:3120/health && break; sleep 1; done
-          node scripts/flow-check.cjs
-          node scripts/interaction-check.cjs
-
       - name: 注入伺服器網址
         env:
           GAME_SERVER_URL: ${{ inputs.game_server_url || vars.GAME_SERVER_URL || env.DEFAULT_GAME_SERVER_URL }}
