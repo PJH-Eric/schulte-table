@@ -166,7 +166,7 @@
     return R.CONTENTS.map(function (c) { return { value: c, label: t('content.' + c), html: '<span class="seg-art">' + root.Art.token(c, c === 'icon' ? 2 : 0, 4) + '</span>' }; });
   }
   function tierOpts(content) {
-    var ids = content ? R.tierIdsFor(content) : [0, 1, 2, 3, 4];
+    var ids = content ? R.tierIdsFor(content) : R.TIERS.map(function (x) { return x.id; });
     return ids.map(function (id) { var tr = R.tier(id); return { value: id, label: t('tier.' + tr.key), sub: tr.size + '×' + tr.size }; });
   }
   function renderSetup() {
