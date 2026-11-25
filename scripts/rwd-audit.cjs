@@ -183,6 +183,11 @@ async function check(p, view) {
       const r = await SCENES[sn](p);
       if (r && r.screenshot) shotPage = r;
       await shotPage.waitForTimeout(350);
+      /* 等有限長度的動畫／轉場結束再量（平行跑時 CPU 吃緊會量到抽屜滑入中途） */
+      await shotPage.evaluate(() => Promise.race([
+        Promise.all(document.getAnimations().filter(a => { const t = a.effect && a.effect.getComputedTiming(); return t && isFinite(t.endTime); }).map(a => a.finished.catch(() => {}))),
+        new Promise(r => setTimeout(r, 1500))
+      ]));
       const issues = (await check(shotPage, vn)).concat(errs);
       const key = [sn, vn, lang, theme].join('|');
       if (issues.length) { report[key] = issues; total += issues.length; }
