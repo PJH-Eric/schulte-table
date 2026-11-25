@@ -13,7 +13,7 @@ on:
 
 env:
   # 遊戲伺服器網址：優先序為 手動執行時填的 inputs → repo Variable GAME_SERVER_URL → 這個預設值。
-  # 尚未建立 Render 服務前保持空字串；注入腳本會擋下空值，避免誤部署。
+  # 線上後端目前是 Cloudflare Worker；網址未設定（空字串）時注入腳本會擋下，避免誤部署。
   DEFAULT_GAME_SERVER_URL: ""
 
 permissions:
@@ -37,6 +37,15 @@ jobs:
 
       - name: 跑測試
         run: npm test
+
+      - name: 畫面與導覽檢查（flow／interaction，需 playwright 與本機伺服器）
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+          node server.js &
+          for i in $(seq 1 30); do curl -sf http://localhost:3120/health && break; sleep 1; done
+          node scripts/flow-check.cjs
+          node scripts/interaction-check.cjs
 
       - name: 注入伺服器網址
         env:

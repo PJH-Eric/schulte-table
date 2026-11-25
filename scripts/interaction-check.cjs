@@ -77,7 +77,14 @@ const BASE = process.env.BASE || 'http://localhost:3120/';
     await p.evaluate(() => Solo.start({ mode: 'classic', content: 'number', tier: 1, skipCountdown: true }));
     await p.goBack(); await p.waitForTimeout(200);
     assert.equal(await p.evaluate(() => Solo.current.phase), 'paused', '遊戲中上一頁＝暫停');
-    await p.evaluate(() => Solo.quit()); await p.waitForTimeout(100);
+    await p.goBack(); await p.waitForTimeout(200);
+    assert.equal(await p.evaluate(() => App.screen), 'solo', '暫停中再按上一頁＝離開回單人選單，不是重新倒數');
+    /* 隨機模式抽籤階段（無法暫停）按上一頁不能被吞掉 */
+    await p.evaluate(() => Solo.start({ mode: 'random', content: 'number', tier: 1 }));
+    assert.equal(await p.evaluate(() => Solo.current.phase), 'draw');
+    await p.click('#btn-back'); await p.waitForTimeout(200);
+    assert.equal(await p.evaluate(() => App.screen), 'solo', '抽籤階段上一頁要能離開');
+    await p.evaluate(() => App.show('home')); await p.evaluate(() => Solo.quit && Solo.quit()); await p.waitForTimeout(100);
     assert.equal(await p.evaluate(() => App.screen), 'home');
     assert.ok(await p.evaluate(() => !document.getElementById('btn-lobby').hidden), '首頁左上有遊戲大廳');
     const nav = p.waitForURL(/example\.com/, { timeout: 5000 }).then(() => true, () => false);
