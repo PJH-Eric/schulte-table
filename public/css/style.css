@@ -291,7 +291,7 @@ button { cursor: pointer; -webkit-tap-highlight-color: transparent; touch-action
 [data-theme="tech"] .seg-art { background: #0f2140; border: 1px solid var(--cell-edge); box-shadow: none; }
 .seg-art .glyph { height: 30px; }
 .seg-art .pips { width: 36px; height: 36px; }
-.seg-tiers { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.seg-tiers { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); }
 .seg-tiers .seg-btn { padding: 8px 4px; }
 .seg-tabs .seg-btn { min-height: 42px; flex-direction: row; }
 .seg-lang .seg-btn, .seg-theme .seg-btn { flex-direction: row; min-height: 44px; }
@@ -521,8 +521,9 @@ button { cursor: pointer; -webkit-tap-highlight-color: transparent; touch-action
 .glyph path { fill: currentColor; stroke: currentColor; stroke-width: var(--glyph-stroke, 30); stroke-linejoin: round; }
 .cell .pips { width: 82cqmin; height: 82cqmin; transform: scale(var(--sc, 1)); }
 .board.s3 .cell .glyph { height: 62cqh; }
-.board.s7 .cell .glyph { height: 58cqh; }
+.board.s7 .cell .glyph, .board.s8 .cell .glyph { height: 58cqh; }
 .board.s6, .board.s7 { --gap: calc(var(--bs) * .013); }
+.board.s8 { --gap: calc(var(--bs) * .008); }
 .cell.cc0 { color: var(--cc0); } .cell.cc1 { color: var(--cc1); } .cell.cc2 { color: var(--cc2); } .cell.cc3 { color: var(--cc3); } .cell.cc4 { color: var(--cc4); }
 .cell.cc5 { color: var(--cc5); } .cell.cc6 { color: var(--cc6); } .cell.cc7 { color: var(--cc7); } .cell.cc8 { color: var(--cc8); } .cell.cc9 { color: var(--cc9); }
 .cell .own { position: absolute; top: 6%; right: 6%; width: 30%; height: 30%; max-width: 26px; max-height: 26px; border-radius: 50%; background: currentColor; display: none; place-items: center; box-shadow: 0 0 0 2px rgba(255,255,255,.85); }

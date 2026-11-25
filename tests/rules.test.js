@@ -141,9 +141,9 @@ test('多局累計：名次分、平手比總分／總耗時', () => {
   assert.equal(tie[1].rank, 1);
 });
 
-test('闖關 50 關：每段難度、內容輪替、正逆交替、混亂度遞增、神話只有數字', () => {
-  assert.equal(R.levelSpec(0), null); assert.equal(R.levelSpec(51), null);
-  for (let n = 1; n <= 50; n++) {
+test('闖關 60 關：每段難度、內容輪替、正逆交替、混亂度遞增、神話與王者只有數字', () => {
+  assert.equal(R.levelSpec(0), null); assert.equal(R.levelSpec(61), null);
+  for (let n = 1; n <= 60; n++) {
     const s = R.levelSpec(n);
     assert.equal(s.size, 3 + Math.floor((n - 1) / 10));
     assert.ok(R.allowed(s.content, s.tier), 'level ' + n);
@@ -153,7 +153,8 @@ test('闖關 50 關：每段難度、內容輪替、正逆交替、混亂度遞�
   }
   assert.equal(R.levelSpec(1).chaos, 0); assert.equal(R.levelSpec(10).chaos, 3);
   assert.equal(R.levelSpec(1).order, 'asc'); assert.equal(R.levelSpec(2).order, 'desc');
-  for (let n = 41; n <= 50; n++) assert.equal(R.levelSpec(n).content, 'number');
+  for (let n = 41; n <= 60; n++) assert.equal(R.levelSpec(n).content, 'number');
+  assert.equal(R.levelSpec(51).size, 8); assert.equal(R.levelSpec(60).size, 8);
   assert.deepEqual(R.makeBoard(R.levelSpec(7)).cells, R.makeBoard(R.levelSpec(7)).cells, '同關排列固定');
 });
 
@@ -164,7 +165,7 @@ test('星數門檻', () => {
   assert.equal(R.stars(40, 0), 1);
 });
 
-test('每日挑戰：台北時間切日、五難度各一題且在允許範圍、可重現', () => {
+test('每日挑戰：台北時間切日、各難度各一題且在允許範圍、可重現', () => {
   assert.equal(R.taipeiDate(Date.UTC(2026, 10, 24, 15, 59)), '2026-11-24');
   assert.equal(R.taipeiDate(Date.UTC(2026, 10, 24, 16, 0)), '2026-11-25');
   for (let t = 0; t < 5; t++) {
@@ -192,7 +193,24 @@ test('英文與注音最高難度放完整序列（A～Z、ㄅ～ㄦ），較小
   assert.equal(R.makeBoard({ content: 'letter', size: 4, seed: 's' }).n, 16);
   assert.equal(R.makeBoard({ content: 'zhuyin', size: 5, seed: 's' }).n, 25);
   assert.equal(R.makeBoard({ content: 'number', size: 7, seed: 's' }).n, 49);
+  assert.equal(R.makeBoard({ content: 'number', size: 8, seed: 's' }).n, 64);
   const g = R.createGame(az, 'solo', ['me']); R.start(g, 0);
   for (let k = 0; k < 26; k++) R.tap(g, 'me', R.cellOfStep(az, k), 1000 + k);
   assert.equal(g.players.me.step, 26);
+});
+
+test('王者 8×8：只有數字、64 格、每日與隨機都能抽到', () => {
+  assert.equal(R.TIERS.length, 6);
+  const k = R.TIERS[5];
+  assert.equal(k.key, 'king'); assert.equal(k.size, 8);
+  assert.deepEqual(R.contentsFor(5), ['number']);
+  assert.ok(!R.allowed('letter', 5) && !R.allowed('zhuyin', 5) && !R.allowed('icon', 5));
+  assert.deepEqual(R.tierIdsFor('number'), [0, 1, 2, 3, 4, 5]);
+  const b = R.makeBoard({ size: 8, content: 'number', seed: 'k' });
+  assert.equal(b.cells.length, 64);
+  assert.equal(new Set(b.cells).size, 64);
+  assert.equal(R.dailySpec('2026-11-25', 5).size, 8);
+  assert.equal(R.drawRandom(5, () => 0.3).content, 'number');
+  assert.equal(R.targetSeconds(5), 67.2);
+  assert.equal(R.levelSpec(51).tier, 5);
 });

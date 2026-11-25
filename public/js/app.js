@@ -192,7 +192,7 @@
     var lv = Store.levels(), open = Store.unlockedLevel();
     var html = '<div class="page levels"><h1 class="page-title">' + K.icon('flag') + '<span>' + esc(t('title.levels')) + '</span></h1>' +
       '<p class="page-sub">' + K.icon('star') + '<span>' + esc(t('levels.stars', { s: Store.totalStars(), m: R.LEVELS * 3 })) + '</span></p>';
-    for (var tierId = 0; tierId < 5; tierId++) {
+    for (var tierId = 0; tierId < R.TIERS.length; tierId++) {
       var tr = R.tier(tierId), segStars = 0;
       var tiles = '';
       for (var i = 1; i <= 10; i++) {
@@ -237,7 +237,7 @@
     var today = R.taipeiDate(), day = Store.daily()[today] || {};
     var html = '<div class="page daily"><h1 class="page-title">' + K.icon('calendar') + '<span>' + esc(t('title.daily')) + '</span></h1>' +
       '<p class="page-sub"><span>' + esc(t('daily.today', { d: today })) + '</span><span class="streak">' + K.icon('flame') + esc(t('daily.streak', { n: Store.dailyStreak(today) })) + '</span></p><div class="daily-grid">';
-    for (var id = 0; id < 5; id++) {
+    for (var id = 0; id < R.TIERS.length; id++) {
       var sp = R.dailySpec(today, id), tr = R.tier(id), done = day[id] != null;
       html += '<button type="button" class="daily-card' + (done ? ' done' : '') + '" data-tier="' + id + '"><span class="dc-art">' + root.Art.token(sp.content, sp.content === 'icon' ? 2 : 0, id) + '</span>' +
         '<span class="dc-txt"><b>' + esc(t('tier.' + tr.key)) + ' <small>' + tr.size + '×' + tr.size + '</small></b><small>' + esc(t('content.' + sp.content) + '・' + t('order.' + sp.order)) + '</small></span>' +

@@ -69,7 +69,7 @@ function ico(pngs) {
         '<div style="font-size:84px;font-weight:900;letter-spacing:.06em;line-height:1.05;text-shadow:0 4px 0 rgba(0,0,0,.25)">舒爾特方格</div>' +
         '<div style="margin-top:18px;font-size:30px;font-weight:700;color:#ffd9a0">依序點完方格，練出好專注</div>' +
         '<div style="margin-top:22px;display:flex;flex-wrap:wrap;gap:10px;font-size:21px;font-weight:700">' +
-        ['數字・注音・字母・圖案', '五段難度・闖關 50 關', '線上搶點・同題競速'].map(s => '<span style="padding:8px 16px;border-radius:999px;background:rgba(255,246,228,.14);border:1.5px solid rgba(255,220,170,.4)">' + s + '</span>').join('') + '</div></div>' +
+        ['數字・注音・字母・圖案', '六段難度・闖關 60 關', '線上搶點・同題競速'].map(s => '<span style="padding:8px 16px;border-radius:999px;background:rgba(255,246,228,.14);border:1.5px solid rgba(255,220,170,.4)">' + s + '</span>').join('') + '</div></div>' +
         '<div style="position:absolute;left:560px;top:' + (h / 2 - 250) + 'px">' + board('wood', 'number', 5, 'seo-a', 6, -5, 300) + '</div>' +
         '<div style="position:absolute;left:885px;top:' + (h / 2 - 255) + 'px">' + board('candy', 'icon', 3, 'seo-b', 2, 6, 230) + '</div>' +
         '<div style="position:absolute;left:880px;top:' + (h / 2 + 15) + 'px;padding:14px;border-radius:14px;background:#070d1c" data-theme="tech">' + board('tech', 'zhuyin', 4, 'seo-c', 3, 0, 210) + '</div>' +

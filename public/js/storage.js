@@ -82,7 +82,7 @@
   }
   function unlockedLevel() {
     var lv = levels(), n = 1;
-    while (n < 50 && lv[n] && lv[n].stars > 0) n++;
+    while (n < 60 && lv[n] && lv[n].stars > 0) n++;
     return n;
   }
   function totalStars() { var lv = levels(), s = 0; for (var k in lv) s += Number(lv[k].stars) || 0; return s; }

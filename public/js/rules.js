@@ -1,6 +1,6 @@
 /* ===== rules.js — 舒爾特方格規則核心（瀏覽器與伺服器共用，不碰計時、畫面與網路）=====
  *
- * 盤面：size（3～7）、content（number／zhuyin／letter／icon）、order（asc／desc）、seed、chaos（0～3）
+ * 盤面：size（3～8）、content（number／zhuyin／letter／icon）、order（asc／desc）、seed、chaos（0～3）
  *   cells[i]   第 i 格的「值」（0..N-1；數字 v＋1、字母 LETTERS[v]、注音 ZHUYIN[v]、圖案 v＋1 顆）
  *   colors[i]  混亂色索引（-1＝主題預設色）  scales[i] 大小級距（1＝原尺寸）  shapes[i] 圖案小圖索引
  * 序列：第 k 步（0 起算）要點的值 = 正序 k、逆序 N-1-k。
@@ -21,20 +21,21 @@
   var CONTENTS = ['number', 'zhuyin', 'letter', 'icon'];
   var ZHUYIN = 'ㄅㄆㄇㄈㄉㄊㄋㄌㄍㄎㄏㄐㄑㄒㄓㄔㄕㄖㄗㄘㄙㄧㄨㄩㄚㄛㄜㄝㄞㄟㄠㄡㄢㄣㄤㄥㄦ';
   var LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  var MAX_SIZE = { number: 7, zhuyin: 6, letter: 5, icon: 5 };
-  /** 五段難度：幼幼班 3×3／簡單 4×4／普通 5×5／困難 6×6／神話 7×7 */
+  var MAX_SIZE = { number: 8, zhuyin: 6, letter: 5, icon: 5 };
+  /** 六段難度：幼幼班 3×3／簡單 4×4／普通 5×5／困難 6×6／神話 7×7／王者 8×8（王者只有數字） */
   var TIERS = [
     { id: 0, key: 'kid', size: 3, secPerCell: 2.5 },
     { id: 1, key: 'easy', size: 4, secPerCell: 1.6 },
     { id: 2, key: 'normal', size: 5, secPerCell: 1.3 },
     { id: 3, key: 'hard', size: 6, secPerCell: 1.2 },
-    { id: 4, key: 'myth', size: 7, secPerCell: 1.1 }
+    { id: 4, key: 'myth', size: 7, secPerCell: 1.1 },
+    { id: 5, key: 'king', size: 8, secPerCell: 1.05 }
   ];
   var ICON_SHAPES = 12;
   var CHAOS_COLORS = 6;        // 混亂度 1～2 用的顏色數
   var CHAOS_COLORS_NEAR = 10;  // 混亂度 3 再加 4 個近似色
   var CHAOS_SCALES = [[1], [1], [0.78, 1], [0.68, 0.84, 1]];
-  var LEVELS = 50;
+  var LEVELS = 60;
   var LEVELS_PER_TIER = 10;
   var KID_HINT_MISSES = 3;     // 幼幼班單機：連續點錯 3 次就提示
   var ROUNDS = [1, 3, 5];
@@ -267,7 +268,7 @@
     });
   }
 
-  /* ---------- 闖關（50 關） ---------- */
+  /* ---------- 闖關（60 關） ---------- */
   function levelSpec(no) {
     no = Number(no);
     if (!(Number.isInteger(no) && no >= 1 && no <= LEVELS)) return null;

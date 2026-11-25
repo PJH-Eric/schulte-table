@@ -58,6 +58,7 @@ const SCENES = {
   confirm: async p => { await p.evaluate(() => App.show('records')); await p.click('#rec-clear'); await p.waitForTimeout(200); },
   game: async p => { await solo({ mode: 'classic', content: 'number', tier: 2 })(p); await tapN(6)(p); },
   gameMyth: async p => { await solo({ mode: 'classic', content: 'number', tier: 4 })(p); await tapN(3)(p); },
+  gameKing: async p => { await solo({ mode: 'classic', content: 'number', tier: 5 })(p); await tapN(3)(p); },
   gameKid: async p => { await solo({ mode: 'reverse', content: 'zhuyin', tier: 0 })(p); await p.evaluate(() => { const c = Solo.current; const w = (Rules.cellOfStep(c.board, 0) + 1) % 9; Solo._tap(w); Solo._tap(w); Solo._tap(w); }); },
   gameAZ: async p => { await solo({ mode: 'classic', content: 'letter', tier: 2 })(p); await tapN(3)(p); },
   gameZhuyinFull: async p => { await solo({ mode: 'reverse', content: 'zhuyin', tier: 3 })(p); await tapN(2)(p); },
@@ -145,7 +146,7 @@ async function check(p, view) {
       if (br.width < 60) issues.push('boardTiny ' + Math.round(br.width));
       if (br.bottom > H + 1 || br.right > W + 1 || br.top < 0) issues.push('boardOut ' + JSON.stringify([br.left, br.top, br.right, br.bottom].map(Math.round)));
       const c = board.querySelector('.cell').getBoundingClientRect();
-      if (c.width < 43.5 || c.height < 40) issues.push('cellSmall ' + Math.round(c.width) + 'x' + Math.round(c.height));
+      if (board.querySelectorAll('.cell').length >= 64 ? (c.width < 39.5 || c.height < 39.5) : (c.width < 43.5 || c.height < 40)) issues.push('cellSmall ' + Math.round(c.width) + 'x' + Math.round(c.height));
       /* 正方形盤面；完整序列（A～Z、ㄅ～ㄦ）多一列時，高度＝格高×列數＋間距，且多出的格子置中、與其他格同寬 */
       const rowsEl = board.querySelectorAll('.row'), tailRow = board.querySelector('.row.tail');
       if (!tailRow) { if (Math.abs(br.width - br.height) > 2) issues.push('boardNotSquare'); }
