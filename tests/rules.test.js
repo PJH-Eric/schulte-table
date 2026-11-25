@@ -11,8 +11,10 @@ test('序列與標籤：四種內容、正逆序', () => {
   assert.equal(R.label('letter', 24), 'Y');
   assert.equal(R.label('zhuyin', 0), 'ㄅ');
   assert.equal(R.label('zhuyin', 35), 'ㄥ');
-  assert.equal(R.ZHUYIN.length, 36);
-  assert.ok(!R.ZHUYIN.includes('ㄦ'));
+  assert.equal(R.label('zhuyin', 36), 'ㄦ');
+  assert.equal(R.ZHUYIN.length, 37);
+  assert.equal(R.label('letter', 25), 'Z');
+  assert.equal(R.LETTERS.length, 26);
   assert.equal(R.label('icon', 4), '5');
   const asc = R.makeBoard({ size: 4, content: 'number', order: 'asc', seed: 's' });
   const desc = R.makeBoard({ size: 4, content: 'number', order: 'desc', seed: 's' });
@@ -179,4 +181,18 @@ test('隨機模式只抽該難度允許的內容', () => {
     assert.ok(R.allowed(s.content, t));
     assert.ok(s.order === 'asc' || s.order === 'desc');
   }
+});
+
+test('英文與注音最高難度放完整序列（A～Z、ㄅ～ㄦ），較小難度取前 N×N 個', () => {
+  const az = R.makeBoard({ content: 'letter', size: 5, seed: 's' });
+  assert.equal(az.n, 26); assert.equal(az.cells.length, 26);
+  assert.deepEqual(az.cells.slice().sort((a, b) => a - b).map(v => R.label('letter', v)).join(''), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ');
+  const zy = R.makeBoard({ content: 'zhuyin', size: 6, seed: 's', order: 'desc' });
+  assert.equal(zy.n, 37); assert.equal(R.label('zhuyin', R.targetValue(zy, 0)), 'ㄦ'); assert.equal(R.label('zhuyin', R.targetValue(zy, 36)), 'ㄅ');
+  assert.equal(R.makeBoard({ content: 'letter', size: 4, seed: 's' }).n, 16);
+  assert.equal(R.makeBoard({ content: 'zhuyin', size: 5, seed: 's' }).n, 25);
+  assert.equal(R.makeBoard({ content: 'number', size: 7, seed: 's' }).n, 49);
+  const g = R.createGame(az, 'solo', ['me']); R.start(g, 0);
+  for (let k = 0; k < 26; k++) R.tap(g, 'me', R.cellOfStep(az, k), 1000 + k);
+  assert.equal(g.players.me.step, 26);
 });

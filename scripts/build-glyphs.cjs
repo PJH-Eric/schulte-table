@@ -1,7 +1,7 @@
 /* ===== scripts/build-glyphs.cjs — 把 Noto Sans TC（SIL OFL 1.1）的字形轉成 SVG 路徑 =====
  * 用法：node scripts/build-glyphs.cjs [字型路徑]
  *   預設讀環境變數 SCHULTE_FONT；輸出 public/js/art/glyphs.js。
- * 只取遊戲用得到的字：0–9、A–Y、注音 ㄅ～ㄥ（36 個，不含 ㄦ）。
+ * 只取遊戲用得到的字：0–9、A–Z、注音 ㄅ～ㄦ（37 個）。
  * 轉成路徑後瀏覽器不需要任何系統字型，也不必載入字型檔；授權見 licenses/NotoSansTC-OFL.txt。
  */
 'use strict';
@@ -13,7 +13,7 @@ if (!FONT || !fs.existsSync(FONT)) {
   console.error('請指定 Noto Sans TC Regular（TrueType）字型路徑：node scripts/build-glyphs.cjs <NotoSansTC-Regular.ttf>');
   process.exit(1);
 }
-const CHARS = '0123456789' + 'ABCDEFGHIJKLMNOPQRSTUVWXY' + 'ㄅㄆㄇㄈㄉㄊㄋㄌㄍㄎㄏㄐㄑㄒㄓㄔㄕㄖㄗㄘㄙㄧㄨㄩㄚㄛㄜㄝㄞㄟㄠㄡㄢㄣㄤㄥ';
+const CHARS = '0123456789' + 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' + 'ㄅㄆㄇㄈㄉㄊㄋㄌㄍㄎㄏㄐㄑㄒㄓㄔㄕㄖㄗㄘㄙㄧㄨㄩㄚㄛㄜㄝㄞㄟㄠㄡㄢㄣㄤㄥㄦ';
 
 const b = fs.readFileSync(FONT);
 const tables = {};

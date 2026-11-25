@@ -19,8 +19,8 @@
   'use strict';
 
   var CONTENTS = ['number', 'zhuyin', 'letter', 'icon'];
-  var ZHUYIN = 'ㄅㄆㄇㄈㄉㄊㄋㄌㄍㄎㄏㄐㄑㄒㄓㄔㄕㄖㄗㄘㄙㄧㄨㄩㄚㄛㄜㄝㄞㄟㄠㄡㄢㄣㄤㄥ';
-  var LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXY';
+  var ZHUYIN = 'ㄅㄆㄇㄈㄉㄊㄋㄌㄍㄎㄏㄐㄑㄒㄓㄔㄕㄖㄗㄘㄙㄧㄨㄩㄚㄛㄜㄝㄞㄟㄠㄡㄢㄣㄤㄥㄦ';
+  var LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   var MAX_SIZE = { number: 7, zhuyin: 6, letter: 5, icon: 5 };
   /** 五段難度：幼幼班 3×3／簡單 4×4／普通 5×5／困難 6×6／神話 7×7 */
   var TIERS = [
@@ -81,6 +81,9 @@
     if (content === 'zhuyin') return ZHUYIN.charAt(v);
     return String(v + 1);
   }
+  /** 盤面格數：英文、注音在最高難度放完整序列（A～Z 26 格、ㄅ～ㄦ 37 格＝正方形再多 1 格，放在最下面一列置中） */
+  var SEQ = { letter: LETTERS, zhuyin: ZHUYIN };
+  function cellCount(content, size) { return SEQ[content] && size === MAX_SIZE[content] ? SEQ[content].length : size * size; }
   function targetValue(board, step) { return board.order === 'desc' ? board.n - 1 - step : step; }
 
   /* ---------- 盤面 ---------- */
@@ -92,7 +95,7 @@
     var order = opt.order === 'desc' ? 'desc' : 'asc';
     var chaos = Math.max(0, Math.min(3, Number(opt.chaos) || 0));
     var seed = opt.seed == null ? newSeed() : String(opt.seed);
-    var n = size * size;
+    var n = cellCount(content, size);
     var r = rng('layout|' + seed + '|' + size + '|' + content);
     var cells = [];
     for (var i = 0; i < n; i++) cells.push(i);
@@ -306,7 +309,7 @@
   function recordKey(content, tierId, order) { return content + ':' + tierId + ':' + (order === 'desc' ? 'desc' : 'asc'); }
 
   return {
-    CONTENTS: CONTENTS, ZHUYIN: ZHUYIN, LETTERS: LETTERS, MAX_SIZE: MAX_SIZE, TIERS: TIERS, ICON_SHAPES: ICON_SHAPES,
+    CONTENTS: CONTENTS, cellCount: cellCount, ZHUYIN: ZHUYIN, LETTERS: LETTERS, MAX_SIZE: MAX_SIZE, TIERS: TIERS, ICON_SHAPES: ICON_SHAPES,
     CHAOS_COLORS: CHAOS_COLORS, CHAOS_COLORS_NEAR: CHAOS_COLORS_NEAR, LEVELS: LEVELS, LEVELS_PER_TIER: LEVELS_PER_TIER,
     KID_HINT_MISSES: KID_HINT_MISSES, ROUNDS: ROUNDS, TAP_RATE: TAP_RATE,
     hashSeed: hashSeed, rng: rng, shuffle: shuffle, newSeed: newSeed,

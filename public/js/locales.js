@@ -78,7 +78,7 @@
     'help.contentNote': ['圖案只比「數量」：每格畫的水果或動物不一樣，看有幾個就好。7 個以上會排成每列 5 個。', '图案只比「数量」：每格画的水果或动物不一样，看有几个就好。7 个以上会排成每行 5 个。', 'Pictures are about the count only — each cell shows a different fruit or animal, just count them. From 7 up they line up in rows of five.'],
     'help.tierH': ['五段難度與逆序', '五段难度与逆序', 'Difficulties and reverse'],
     'help.tierNote': ['大盤面放不下的內容不會出現在選單裡。', '大盘面放不下的内容不会出现在菜单里。', 'Content that does not fit a large board is simply not offered there.'],
-    'help.reverse': ['逆序就是倒著點：數字從大到小、注音從ㄥ到ㄅ、字母從 Y 到 A、圖案由多到少。', '逆序就是倒着点：数字从大到小、注音从ㄥ到ㄅ、字母从 Y 到 A、图案由多到少。', 'Reverse means counting down: big to small numbers, ㄥ to ㄅ, Y to A, most pictures to fewest.'],
+    'help.reverse': ['逆序就是倒著點：數字從大到小、注音與字母倒回ㄅ和 A（最高難度從ㄦ、Z 開始）、圖案由多到少。', '逆序就是倒着点：数字从大到小、注音与字母倒回ㄅ和 A（最高难度从ㄦ、Z 开始）、图案由多到少。', 'Reverse means counting down: big to small numbers, back to ㄅ and A (from ㄦ and Z at the top level), most pictures to fewest.'],
     'help.soloH': ['單機模式', '单机模式', 'Solo modes'],
     'help.mode.classic': ['選內容與難度，挑戰最快時間。', '选内容与难度，挑战最快时间。', 'Pick content and difficulty; chase your best time.'],
     'help.mode.reverse': ['和經典一樣，但倒著點，紀錄分開存。', '和经典一样，但倒着点，记录分开存。', 'Like classic but backwards; records are kept separately.'],

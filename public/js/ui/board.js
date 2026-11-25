@@ -32,10 +32,16 @@
       if (!self.board) return;
       var s = self.board.size, i = self.focusIdx;
       var map = { ArrowRight: 1, ArrowLeft: -1, ArrowDown: s, ArrowUp: -s };
-      if (e.key === 'Home') i = i - (i % s); else if (e.key === 'End') i = i - (i % s) + s - 1;
+      if (e.key === 'Home') i = i - (i % s); else if (e.key === 'End') i = Math.min(i - (i % s) + s - 1, self.board.n - 1);
       else if (map[e.key] != null) {
+        var sq = s * s, nAll = self.board.n, mid = Math.floor(s / 2);
         var n = i + map[e.key];
-        if ((e.key === 'ArrowRight' && i % s === s - 1) || (e.key === 'ArrowLeft' && i % s === 0) || n < 0 || n >= self.board.n) n = i;
+        if (i >= sq) {                                  // 最下面多出的那一列（置中）
+          var tc = i - sq, off = mid - Math.floor((nAll - sq) / 2);
+          n = e.key === 'ArrowUp' ? sq - s + Math.min(s - 1, tc + off) : e.key === 'ArrowRight' && i + 1 < nAll ? i + 1 : e.key === 'ArrowLeft' && i > sq ? i - 1 : i;
+        } else if (e.key === 'ArrowDown' && n >= sq && nAll > sq) {
+          n = sq + Math.max(0, Math.min(nAll - sq - 1, (i % s) - (mid - Math.floor((nAll - sq) / 2))));
+        } else if ((e.key === 'ArrowRight' && i % s === s - 1) || (e.key === 'ArrowLeft' && i % s === 0) || n < 0 || n >= nAll) n = i;
         i = n;
       } else return;
       e.preventDefault();
@@ -56,7 +62,10 @@
   Board.prototype.fit = function () {
     var w = this.wrap.clientWidth, h = this.wrap.clientHeight;
     if (!w || !h) return;
-    var side = Math.floor(Math.min(w, h));
+    /* 有多出的一列時盤面比正方形高：高度 = 欄寬 × 列數 + 間距（與 CSS 的 --gap 比例一致） */
+    var b = this.board, s = b ? b.size : 1, rows = b ? Math.ceil(b.n / s) : 1, k = s >= 6 ? 0.013 : 0.022;
+    var ratio = rows > s ? (1 - k * (s - 1)) / s * rows + k * (rows - 1) : 1;
+    var side = Math.floor(Math.min(w, h / ratio));
     this.el.style.setProperty('--bs', side + 'px');
   };
 
@@ -65,14 +74,20 @@
     this.board = board;
     this.onTap = opt.onTap || null;
     this.el.className = 'board s' + board.size + ' ct-' + board.content + (board.chaos ? ' chaos' + board.chaos : '');
+    var rows = Math.ceil(board.n / board.size);
+    this.el.classList.toggle('has-tail', rows > board.size);
     this.el.style.setProperty('--n', board.size);
-    this.el.setAttribute('aria-rowcount', board.size);
+    this.el.style.setProperty('--rows', rows);
+    this.el.setAttribute('aria-rowcount', rows);
     this.el.setAttribute('aria-colcount', board.size);
     var html = '';
-    for (var r = 0; r < board.size; r++) {
-      html += '<div class="row" role="row">';
+    for (var r = 0; r < rows; r++) {
+      var tail = r >= board.size;                       // 完整序列多出的格子：最下面一列置中
+      html += '<div class="row' + (tail ? ' tail' : '') + '" role="row">';
       for (var c = 0; c < board.size; c++) {
-        var i = r * board.size + c, v = board.cells[i];
+        var i = r * board.size + c;
+        if (i >= board.n) break;
+        var v = board.cells[i];
         var col = board.colors[i];
         var lab = R.label(board.content, v);
         html += '<button type="button" role="gridcell" class="cell' + (col >= 0 ? ' cc' + col : '') + '" data-i="' + i + '" tabindex="' + (i === 0 ? 0 : -1) + '" style="--sc:' + board.scales[i] + '" data-l="' + lab + '" aria-label="' + lab + '">' +

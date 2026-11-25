@@ -59,6 +59,8 @@ const SCENES = {
   game: async p => { await solo({ mode: 'classic', content: 'number', tier: 2 })(p); await tapN(6)(p); },
   gameMyth: async p => { await solo({ mode: 'classic', content: 'number', tier: 4 })(p); await tapN(3)(p); },
   gameKid: async p => { await solo({ mode: 'reverse', content: 'zhuyin', tier: 0 })(p); await p.evaluate(() => { const c = Solo.current; const w = (Rules.cellOfStep(c.board, 0) + 1) % 9; Solo._tap(w); Solo._tap(w); Solo._tap(w); }); },
+  gameAZ: async p => { await solo({ mode: 'classic', content: 'letter', tier: 2 })(p); await tapN(3)(p); },
+  gameZhuyinFull: async p => { await solo({ mode: 'reverse', content: 'zhuyin', tier: 3 })(p); await tapN(2)(p); },
   gameIcon: async p => { await solo({ mode: 'classic', content: 'icon', tier: 2 })(p); await tapN(4)(p); },
   gameChaos: async p => { await solo({ mode: 'level', level: 40 })(p); await tapN(4)(p); },
   countdown: async p => { await p.evaluate(() => Solo.start({ mode: 'classic', content: 'letter', tier: 1 })); await p.waitForTimeout(400); },
@@ -144,7 +146,16 @@ async function check(p, view) {
       if (br.bottom > H + 1 || br.right > W + 1 || br.top < 0) issues.push('boardOut ' + JSON.stringify([br.left, br.top, br.right, br.bottom].map(Math.round)));
       const c = board.querySelector('.cell').getBoundingClientRect();
       if (c.width < 43.5 || c.height < 40) issues.push('cellSmall ' + Math.round(c.width) + 'x' + Math.round(c.height));
-      if (Math.abs(br.width - br.height) > 2) issues.push('boardNotSquare');
+      /* 正方形盤面；完整序列（A～Z、ㄅ～ㄦ）多一列時，高度＝格高×列數＋間距，且多出的格子置中、與其他格同寬 */
+      const rowsEl = board.querySelectorAll('.row'), tailRow = board.querySelector('.row.tail');
+      if (!tailRow) { if (Math.abs(br.width - br.height) > 2) issues.push('boardNotSquare'); }
+      else {
+        const r0 = rowsEl[0].getBoundingClientRect(), r1 = rowsEl[1].getBoundingClientRect(), gapY = r1.top - r0.bottom;
+        const want = r0.height * rowsEl.length + gapY * (rowsEl.length - 1);
+        if (Math.abs(br.height - want) > 3) issues.push('boardTailHeight ' + Math.round(br.height) + '≠' + Math.round(want));
+        const tc = tailRow.querySelector('.cell').getBoundingClientRect(), c0 = board.querySelector('.cell').getBoundingClientRect();
+        if (Math.abs((tc.left + tc.right) / 2 - (br.left + br.right) / 2) > 2 || Math.abs(tc.width - c0.width) > 1.5) issues.push('tailCellOff');
+      }
       const hud = document.getElementById('hud').getBoundingClientRect();
       if (hud.width && hud.bottom > br.top + 1 && hud.right > br.left + 1 && hud.left < br.right - 1) issues.push('hudOverBoard');
     }
