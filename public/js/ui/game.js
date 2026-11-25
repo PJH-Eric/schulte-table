@@ -58,7 +58,7 @@
   function setNext(v, shape) {
     var el = $('hud-next-val');
     if (v == null) { el.innerHTML = root.Kit.icon('check'); el.setAttribute('aria-label', t('hud.allDone')); return; }
-    el.innerHTML = root.Art.token(state.content, v, state.content === 'icon' ? 0 : shape);
+    el.innerHTML = root.Art.token(state.content, v, shape);
     el.setAttribute('aria-label', root.Rules.label(state.content, v));
   }
 
