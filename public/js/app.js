@@ -64,8 +64,12 @@
     switch (screen) {
       case 'game':
         if (root.OnlineUI && root.OnlineUI.inRoom()) { root.OnlineUI.back(); return; }
-        if (root.Solo.playing()) { root.Solo.pause(); return; }
-        if (root.GameView.paused()) { root.Solo.resume(); return; }
+        if (root.Solo.playing()) {
+          root.Solo.pause();
+          /* 抽籤動畫階段無法暫停（pause 會直接略過），此時不能吞掉上一頁，要往下直接離開 */
+          if (root.GameView.paused()) return;
+        }
+        /* 暫停中再按上一頁：直接離開回上一層（繼續請按暫停選單的「繼續」，resume 會重新倒數，看起來像重新開始） */
         var cur = root.Solo.current;
         var to = cur && cur.spec.mode === 'level' ? 'levels' : cur && cur.spec.mode === 'daily' ? 'daily' : 'solo';
         show(to); return;
