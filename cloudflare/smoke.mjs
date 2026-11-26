@@ -14,7 +14,7 @@ const src = fs.readFileSync(path.join(here, 'dist', 'worker.mjs'), 'utf8');
 const stub = 'data:text/javascript,' + encodeURIComponent('export class DurableObject { constructor(ctx, env) { this.ctx = ctx; this.env = env; } }');
 const patched = src.replace(/from\s*"cloudflare:workers"/g, 'from"' + stub + '"').replace(/from\s*'cloudflare:workers'/g, "from'" + stub + "'");
 const tmp = path.join(here, 'dist', 'worker.smoke.mjs');
-fs.writeFileSync(tmp, patched);
+fs.writeFileSync(tmp, patched, 'utf8');
 
 /* 一對互相連通的 WebSocket（server 端給 DO，client 端給測試） */
 class Side extends EventTarget {
@@ -26,16 +26,48 @@ class Side extends EventTarget {
 globalThis.WebSocketPair = function () { const a = new Side(), b = new Side(); a.peer = b; b.peer = a; return { 0: a, 1: b }; };
 const NativeResponse = globalThis.Response;
 globalThis.Response = class extends NativeResponse {
-  constructor(body, init) { if (init && init.status === 101) { super(null, { status: 200 }); this.webSocket = init.webSocket; this.upgraded = true; return; } super(body, init); }
+  constructor(body, init) {
+    if (init?.status === 101) {
+      super(null, { ...init, status: 200 });
+      Object.defineProperty(this, 'status', { value: 101 });
+      this.webSocket = init.webSocket;
+      this.upgraded = true;
+      return;
+    }
+    super(body, init);
+  }
 };
 
 const mod = await import(pathToFileURL(tmp).href);
-const lobby = new mod.GameLobby({ storage: {} }, {});
+const storage = new Map();
+const id = 'schulte-table-v2';
+let initialized;
+const lobby = new mod.GameLobby({
+  id,
+  storage: {
+    get: key => storage.get(key),
+    put: (key, value) => storage.set(key, value)
+  },
+  blockConcurrencyWhile: fn => { initialized = fn(); }
+}, {});
+await initialized;
+const env = {
+  LOBBY: {
+    idFromName(name) { assert.equal(name, id); return name; },
+    get(name, options) {
+      assert.equal(name, id);
+      assert.deepEqual(options, { locationHint: 'apac' });
+      return lobby;
+    }
+  }
+};
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 async function connect(cid, name) {
-  const res = await lobby.fetch(new Request('https://x/ws', { headers: { Upgrade: 'websocket' } }));
+  const res = await mod.default.fetch(new Request('https://x/ws', { headers: { Upgrade: 'websocket' } }), env);
   assert.ok(res.upgraded);
+  assert.match(res.headers.get('x-do-rtt-ms'), /^\d+\.\d$/);
+  assert.equal(res.headers.get('x-edge-colo'), 'unknown');
   const ws = res.webSocket, msgs = [];
   const c = { msgs, send: o => ws.send(JSON.stringify(o)), close: () => ws.close(), room: null };
   ws.addEventListener('message', e => { const m = JSON.parse(e.data); if (m.type === 'room') c.room = m.room; msgs.push(m); });
@@ -46,7 +78,12 @@ async function connect(cid, name) {
 }
 
 try {
-  const health = await (await lobby.fetch(new Request('https://x/health'))).json();
+  const request = new Request('https://x/health');
+  request.cf = { colo: 'TPE' };
+  const response = await mod.default.fetch(request, env);
+  assert.match(response.headers.get('x-do-rtt-ms'), /^\d+\.\d$/);
+  assert.equal(response.headers.get('x-edge-colo'), 'TPE');
+  const health = await response.json();
   assert.equal(health.game, 'schulte-table');
   const a = await connect('smoke-client-a', 'A'), b = await connect('smoke-client-b', 'B');
   a.send({ type: 'create', name: 'A', settings: { mode: 'grab', content: 'zhuyin', tier: 0, rounds: 1 } });
