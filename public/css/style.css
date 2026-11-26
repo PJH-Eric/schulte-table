@@ -841,3 +841,40 @@ body .lc-root { --lc-accent: var(--accent); --lc-accent-ink: var(--accent-ink); 
 @media (orientation: landscape) and (max-height: 560px) { .g-flash { top: auto; bottom: 0; transform: translateX(-50%); font-size: 14px; } }
 #scr-lobby .page { padding-bottom: calc(96px + env(safe-area-inset-bottom)); }
 [data-theme="candy"] .cell .own { box-shadow: 0 0 0 2px #fff, 0 0 0 3.5px rgba(59,31,74,.45); }
+
+.home-support {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  gap: 5px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 10px;
+  font-size: .875rem;
+  font-weight: 800;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.home-support:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+
+#app:not([data-screen="home"]) .home-support { display: none; }
+
+.home-support .support-label:not([lang="zh-Hant"]),
+:is(html:lang(zh-Hans), html:lang(zh-CN)) .home-support .support-label[lang="zh-Hant"],
+html:lang(en) .home-support .support-label[lang="zh-Hant"] { display: none; }
+:is(html:lang(zh-Hans), html:lang(zh-CN)) .home-support .support-label[lang="zh-Hans"],
+html:lang(en) .home-support .support-label[lang="en"] { display: inline; }
+
+@media (max-width: 480px) {
+  .home-support {
+    flex-direction: column;
+    gap: 2px;
+    width: 50px;
+    padding-inline: 3px;
+    font-size: 11px;
+    letter-spacing: 0;
+  }
+  .home-support > [aria-hidden="true"] { font-size: 1rem; }
+}
