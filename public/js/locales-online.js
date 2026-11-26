@@ -58,6 +58,7 @@
     'sum.comboTip': ['連擊 3 起每格 2 分、6 起 3 分、9 起 4 分；被搶走就歸零。', '连击 3 起每格 2 分、6 起 3 分、9 起 4 分；被抢走就归零。', 'Combo 3+ = 2 pts, 6+ = 3, 9+ = 4 per cell; losing a cell resets it.'],
     'sum.raceTip': ['只看得到對手的進度，看不到他們的盤面。', '只看得到对手的进度，看不到他们的盘面。', 'You only see rivals’ progress, not their boards.'],
     'online.almost': ['差一點！被搶先了', '差一点！被抢先了', 'So close! Someone was faster'],
+    'online.raceCountdown': ['第一名已完成！{n} 秒後結束', '第一名已完成！{n} 秒后结束', 'First place done! Ends in {n}s'],
     'online.comboN': ['連擊 ×{n}！', '连击 ×{n}！', 'Combo ×{n}!'],
     'online.roundResult': ['第 {n}/{m} 局結果', '第 {n}/{m} 局结果', 'Round {n}/{m} result'],
     'online.ptsScore': ['名次分 {p}・{s} 分', '名次分 {p}・{s} 分', '{p} place pts · {s} score'],

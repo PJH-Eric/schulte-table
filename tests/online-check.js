@@ -106,6 +106,7 @@ function client(cid, name) {
     for (let s = 0; s < 3; s++) b.send({ type: 'tap', idx: Rules.cellOfStep(rb, s) });
     await v.wait(m => m.type === 'progress' && m.step === 3);
     for (let s = 0; s < 9; s++) a.send({ type: 'tap', idx: Rules.cellOfStep(rb, s) });
+    for (let s = 3; s < 9; s++) b.send({ type: 'tap', idx: Rules.cellOfStep(rb, s) });   // 全員完成才提前結束
     await a.wait(m => m.type === 'matchEnd' && m.no === 2);
     await sleep(60);
     const st = a.room.match.standing;

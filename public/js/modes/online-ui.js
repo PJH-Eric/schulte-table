@@ -386,6 +386,7 @@
       G2.setRace(list.map(function (p) { return { seat: p.seat, name: p.name, done: p.id === room.you.id && local ? local.players.me.step : p.step, n: board.n, me: p.me, finished: p.finished }; }));
     }
     if (room.status !== 'playing') G2.stopClock();
+    raceCountdown();
   }
   function summary() {
     var m = room.match; if (!m) return;
@@ -458,7 +459,17 @@
   function onProgress(e) {
     if (!room || !room.match) return;
     room.match.players.forEach(function (p) { if (p.id === e.by) { p.step = e.step; p.finished = !!e.finished; } });
+    if (e.raceEndAt) { room.match.raceEndAt = e.raceEndAt; raceCountdown(); }
     refreshHud();
+  }
+  /** 競速：第一名完成後的結束倒數提示 */
+  var graceKey = 0;
+  function raceCountdown() {
+    var m = room && room.match;
+    if (!m || m.mode !== 'race' || room.status !== 'playing' || !m.raceEndAt) { if (graceKey) { graceKey = 0; root.GameView.hideRaceGrace(); } return; }
+    if (graceKey === m.raceEndAt) return;
+    graceKey = m.raceEndAt;
+    root.GameView.raceGrace(m.raceEndAt, R.RACE_GRACE_MS, sNow);
   }
 
   /* ---------- 本局結果、總結算 ---------- */

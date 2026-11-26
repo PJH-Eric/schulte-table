@@ -25,6 +25,7 @@
     $('hud-race').hidden = state.kind !== 'race';
     $('hud-next').hidden = !nextVisible();
     $('watch-note').hidden = !state.spectator;
+    hideRaceGrace();
     board.render(o.board, { onTap: o.onTap, done: o.done, owners: o.owners });
     board.lock(true);
     hidePause();
@@ -164,13 +165,37 @@
     el.textContent = text; el.className = 'g-flash ' + (kind || ''); el.hidden = false;
     clearTimeout(flashT); flashT = setTimeout(function () { el.hidden = true; }, 1100);
   }
+  /** 競速：第一名完成後的結束倒數條（endAt＝結束時間、total＝總毫秒、nowFn＝目前時間） */
+  var graceT = 0;
+  function raceGrace(endAt, total, nowFn) {
+    var el = $('race-grace'); if (!el) return;
+    nowFn = nowFn || Date.now;
+    clearInterval(graceT);
+    el.hidden = false;
+    var lastN = -1;
+    function step() {
+      var left = Math.max(0, endAt - nowFn());
+      var n = Math.ceil(left / 1000);
+      $('rg-fill').style.setProperty('--p', total ? Math.min(1, left / total) : 0);
+      if (n !== lastN) {
+        lastN = n;
+        $('rg-text').textContent = t('online.raceCountdown', { n: n });
+        el.classList.toggle('urgent', n <= 3);
+        if (n > 0 && n <= 3) root.Sound.play('tick');
+      }
+      if (left <= 0) clearInterval(graceT);
+    }
+    graceT = setInterval(step, 100);
+    step();
+  }
+  function hideRaceGrace() { clearInterval(graceT); var el = $('race-grace'); if (el) { el.hidden = true; el.classList.remove('urgent'); } }
   function setFoot(html) { var el = $('g-foot'); if (el) el.innerHTML = html || ''; }
-  function close() { stopClock(); cancelCountdown(); hidePause(); var d = $('draw-layer'); d.hidden = true; d.innerHTML = ''; $('hud-next').style.visibility = ''; }
+  function close() { hideRaceGrace(); stopClock(); cancelCountdown(); hidePause(); var d = $('draw-layer'); d.hidden = true; d.innerHTML = ''; $('hud-next').style.visibility = ''; }
 
   root.GameView = {
     init: init, open: open, startClock: startClock, stopClock: stopClock, setTime: setTime, setProgress: setProgress, setNext: setNext,
     setScores: setScores, setRace: setRace, countdown: countdown, cancelCountdown: cancelCountdown, showPause: showPause, hidePause: hidePause,
-    paused: paused, draw: draw, close: close, refreshNext: refreshNext, setFoot: setFoot, flash: flash,
+    paused: paused, draw: draw, close: close, refreshNext: refreshNext, setFoot: setFoot, flash: flash, raceGrace: raceGrace, hideRaceGrace: hideRaceGrace,
     get board() { return board; }, get state() { return state; }
   };
 })(typeof self !== 'undefined' ? self : this);

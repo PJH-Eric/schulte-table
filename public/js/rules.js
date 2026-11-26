@@ -232,10 +232,16 @@
     placed.forEach(function (e) { e.points = placePoints(e.rank, list.length); });
     return placed;
   }
-  /** 競速：第一個完成者出現即結束該局（假設 3） */
-  function raceOver(g) {
+  /** 競速：是否已有人完成（第一名出現，開始倒數） */
+  function raceFirst(g) {
     if (g.kind !== 'race') return false;
     return g.order.some(function (id) { return g.players[id].finishedAt; });
+  }
+  /** 競速：所有仍在場的人都完成時才提前結束；否則等第一名之後的倒數 */
+  function raceOver(g) {
+    if (g.kind !== 'race') return false;
+    var ids = g.active || g.order;
+    return ids.length > 0 && ids.every(function (id) { return g.players[id].finishedAt; });
   }
 
   /**
@@ -317,7 +323,7 @@
     tier: tier, isContent: isContent, allowed: allowed, contentsFor: contentsFor, tierIdsFor: tierIdsFor, label: label,
     makeBoard: makeBoard, targetValue: targetValue, cellOfStep: cellOfStep, stepOfCell: stepOfCell, boardSpec: boardSpec,
     createGame: createGame, start: start, tap: tap, comboPoints: comboPoints, kidHint: kidHint,
-    rankGrab: rankGrab, rankRace: rankRace, raceOver: raceOver, placePoints: placePoints, matchStanding: matchStanding,
+    rankGrab: rankGrab, rankRace: rankRace, raceOver: raceOver, raceFirst: raceFirst, RACE_GRACE_MS: 10000, placePoints: placePoints, matchStanding: matchStanding,
     levelSpec: levelSpec, targetSeconds: targetSeconds, stars: stars, taipeiDate: taipeiDate, dailySpec: dailySpec,
     drawRandom: drawRandom, recordKey: recordKey
   };

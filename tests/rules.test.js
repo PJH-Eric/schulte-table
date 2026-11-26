@@ -116,9 +116,10 @@ test('競速：各自進度、第一個完成即結束、未完成依進度並�
   const g = R.start(R.createGame(b, 'race', ['a', 'b', 'c']), 1000);
   for (let i = 0; i < 4; i++) R.tap(g, 'b', R.cellOfStep(b, g.players.b.step), 1500);
   for (let i = 0; i < 4; i++) R.tap(g, 'c', R.cellOfStep(b, g.players.c.step), 1500);
-  assert.equal(R.raceOver(g), false);
+  assert.equal(R.raceFirst(g), false);
   solve(g, 'a', 3000);
-  assert.equal(R.raceOver(g), true);
+  assert.equal(R.raceFirst(g), true, '第一名完成');
+  assert.equal(R.raceOver(g), false, '尚有人未完成，等倒數');
   const rank = R.rankRace(g);
   assert.equal(rank[0].id, 'a'); assert.equal(rank[0].time, 2000); assert.equal(rank[0].rank, 1);
   assert.equal(rank[1].rank, 2); assert.equal(rank[2].rank, 2, '進度相同並列');
